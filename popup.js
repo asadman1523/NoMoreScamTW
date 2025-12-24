@@ -22,7 +22,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     async function updateStatus() {
-        const { fraudDatabase, lastUpdated, nextUpdateTime } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime']);
+        const { fraudDatabase, lastUpdated, nextUpdateTime, termsAccepted } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime', 'termsAccepted']);
+
+        if (!termsAccepted) {
+            statusDiv.innerHTML = `
+                <div style="color: #d93025; margin-bottom: 10px;">⚠️ 尚未同意免責聲明</div>
+                <button id="openTermsBtn" style="background:#4285f4; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">開啟條款頁面</button>
+            `;
+            document.getElementById('openTermsBtn').addEventListener('click', () => {
+                chrome.tabs.create({ url: 'welcome.html' });
+            });
+            return;
+        }
 
         if (fraudDatabase && lastUpdated) {
             const lastDate = new Date(lastUpdated).toLocaleString();

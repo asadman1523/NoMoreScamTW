@@ -21,7 +21,7 @@ async function updateDatabase() {
 
             // Regex to split by comma, ignoring commas inside quotes
             const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-            
+
             if (parts.length >= 2) {
                 // Remove potential quotes around fields
                 const cleanParts = parts.map(p => p.trim().replace(/^"|"$/g, ''));
@@ -117,13 +117,27 @@ function scheduleDailyUpdate(lastUpdatedTime) {
 }
 
 // 事件監聽器
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
     updateDatabase();
+
+    // Check acceptance
+    const { termsAccepted } = await chrome.storage.local.get('termsAccepted');
+    if (!termsAccepted) {
+        chrome.tabs.create({ url: 'welcome.html' });
+    }
 });
 
 chrome.runtime.onStartup.addListener(async () => {
     // Populate cache on startup
-    const { fraudDatabase, lastUpdated } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated']);
+    const { fraudDatabase, lastUpdated, termsAccepted } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'termsAccepted']);
+
+    if (!termsAccepted) {
+        // Optional: Open welcome page every startup if not accepted?
+        // Let's just rely on onInstalled or user clicking extension icon.
+        // Actually, for better visibility:
+        chrome.tabs.create({ url: 'welcome.html' });
+    }
+
     if (fraudDatabase) {
         cachedDatabase = fraudDatabase;
     }
@@ -148,6 +162,14 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete' && tab.url) {
+        // Enforce Terms: Check if user agreed
+        // Since this hotpath runs often, we should cache termsAccepted too, but storage.get is fast enough for now locally.
+        const { termsAccepted } = await chrome.storage.local.get('termsAccepted');
+
+        if (!termsAccepted) {
+            return; // Do not protect if not agreed
+        }
+
         const fraudInfo = await checkUrl(tab.url);
         if (fraudInfo) {
             console.log(`Fraud detected: ${tab.url}`, fraudInfo);
