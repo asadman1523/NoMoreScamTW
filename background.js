@@ -1,5 +1,8 @@
 const DATA_URL = 'https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download';
 
+// In-memory cache for the database
+let cachedDatabase = null;
+
 // 擷取並更新詐騙資料庫
 async function updateDatabase() {
     try {
@@ -8,42 +11,48 @@ async function updateDatabase() {
         const text = await response.text();
         const lines = text.split(/\r?\n/);
 
-        // 跳過標頭 (根據範例跳過前 2 行)
-        // 範例:
-        // WEBSITE_NM,WEBURL,CNT,STA_SDATE,STA_EDATE
-        // 網站名稱,網址,件數,統計起始日期,統計結束日期
+        // CSV Header: WEBSITE_NM,WEBURL,CNT,STA_SDATE,STA_EDATE
         const data = {};
 
-        // 從索引 2 開始
+        // 從索引 2 開始 (跳過標頭)
         for (let i = 2; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
 
-            // 簡單的 CSV 分割 (假設範例中的欄位沒有逗號)
-            // 如果欄位中有逗號，可能需要更好的解析器。
-            // 但對於 URL 和名稱，通常是安全的。
-            const parts = line.split(',');
+            // Regex to split by comma, ignoring commas inside quotes
+            const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            
             if (parts.length >= 2) {
-                const name = parts[0].trim();
-                let url = parts[1].trim();
+                // Remove potential quotes around fields
+                const cleanParts = parts.map(p => p.trim().replace(/^"|"$/g, ''));
 
-                // 正規化 URL: 移除 http://, https://, www. 前綴 (如果需要)，或保持原樣。
-                // 清單中有 'www.0857.games', 'tw11st.com'。
-                // 我們應該直接儲存清單中的 hostname，
-                // 也許也儲存一個沒有 'www.' 的版本？
-                // 目前先儲存清單中的原始網域。
-                // 移除協定 (如果存在)
-                url = url.replace(/^https?:\/\//, '');
-                // 移除結尾斜線
+                const name = cleanParts[0];
+                let rawUrl = cleanParts[1];
+                const count = cleanParts[2] || '0';
+                const startDate = cleanParts[3] || '';
+                const endDate = cleanParts[4] || '';
+
+                if (!rawUrl) continue;
+
+                // 正規化 URL
+                let url = rawUrl.replace(/^https?:\/\//, '');
                 url = url.replace(/\/$/, '');
 
                 if (url) {
-                    data[url] = name;
+                    data[url] = {
+                        name: name,
+                        url: rawUrl,
+                        count: count,
+                        startDate: startDate,
+                        endDate: endDate
+                    };
                 }
             }
         }
 
         await chrome.storage.local.set({ fraudDatabase: data, lastUpdated: Date.now() });
+        cachedDatabase = data; // Update cache
+
         // 確保下次更新已排程並顯示
         scheduleDailyUpdate();
         console.log(`Database updated. Loaded ${Object.keys(data).length} entries.`);
@@ -56,37 +65,37 @@ async function updateDatabase() {
 // 檢查 URL 是否在資料庫中
 async function checkUrl(url) {
     try {
-        const { fraudDatabase } = await chrome.storage.local.get('fraudDatabase');
-        if (!fraudDatabase) return null;
+        // Use cache if available, otherwise load from storage
+        if (!cachedDatabase) {
+            const { fraudDatabase } = await chrome.storage.local.get('fraudDatabase');
+            cachedDatabase = fraudDatabase || {};
+        }
+
+        if (!cachedDatabase || Object.keys(cachedDatabase).length === 0) return null;
 
         const urlObj = new URL(url);
         const hostname = urlObj.hostname;
 
-        // 檢查完全符合
-        if (fraudDatabase[hostname]) {
-            return fraudDatabase[hostname];
-        }
+        // Helper to check domain against DB
+        const check = (domain) => {
+            return cachedDatabase[domain] || null;
+        };
 
-        // 如果適用，檢查沒有 'www.' 的版本
+        // 1. Check exact match
+        let result = check(hostname);
+        if (result) return result;
+
+        // 2. Check w/o 'www.' if present
         if (hostname.startsWith('www.')) {
-            const rootDomain = hostname.slice(4);
-            if (fraudDatabase[rootDomain]) {
-                return fraudDatabase[rootDomain];
-            }
+            result = check(hostname.slice(4));
+            if (result) return result;
         }
 
-        // 如果沒有 'www.'，檢查有的版本
+        // 3. Check w/ 'www.' if missing
         if (!hostname.startsWith('www.')) {
-            const wwwDomain = 'www.' + hostname;
-            if (fraudDatabase[wwwDomain]) {
-                return fraudDatabase[wwwDomain];
-            }
+            result = check('www.' + hostname);
+            if (result) return result;
         }
-
-        // 另外檢查清單中是否有 'www.' 但用戶訪問的是根網域
-        // 例如：清單有 'www.example.com'，用戶訪問 'example.com'
-        // 若沒有雙重儲存，這很難有效率地查詢。
-        // 目前假設清單是權威的。
 
         return null;
     } catch (e) {
@@ -113,9 +122,13 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onStartup.addListener(async () => {
-    const { lastUpdated } = await chrome.storage.local.get('lastUpdated');
-    const now = Date.now();
+    // Populate cache on startup
+    const { fraudDatabase, lastUpdated } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated']);
+    if (fraudDatabase) {
+        cachedDatabase = fraudDatabase;
+    }
 
+    const now = Date.now();
     // 如果從未更新或距離上次更新超過 24 小時
     if (!lastUpdated || (now - lastUpdated) >= 24 * 60 * 60 * 1000) {
         console.log('Startup: Database outdated, updating...');
@@ -135,12 +148,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete' && tab.url) {
-        const fraudName = await checkUrl(tab.url);
-        if (fraudName) {
-            console.log(`Fraud detected: ${tab.url} (${fraudName})`);
+        const fraudInfo = await checkUrl(tab.url);
+        if (fraudInfo) {
+            console.log(`Fraud detected: ${tab.url}`, fraudInfo);
             chrome.tabs.sendMessage(tabId, {
                 action: 'showWarning',
-                fraudName: fraudName
+                fraudInfo: fraudInfo
             }).catch(() => {
                 // Content script 可能尚未準備好或未注入某些頁面 (例如 chrome://)
             });
