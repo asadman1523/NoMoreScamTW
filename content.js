@@ -28,7 +28,7 @@ function showWarning(fraudInfo) {
         </div>
       </div>
       <div id="fraud-guard-timer" style="margin-bottom: 10px; color: #d93025; font-weight: bold;">
-        將於 <span id="fg-countdown">10</span> 秒後自動導向安全頁面...
+        將於 <span id="fg-countdown">60</span> 秒後自動導向安全頁面...
       </div>
       <button id="fraud-guard-button">立即離開 (回到 Google)</button>
       <button id="fraud-guard-ignore">我了解風險，繼續瀏覽</button>
@@ -51,7 +51,7 @@ function showWarning(fraudInfo) {
 
   // Redirect logic
   const safeUrl = 'https://www.google.com';
-  let timeLeft = 10;
+  let timeLeft = 60;
   const countdownEl = document.getElementById('fg-countdown');
 
   // Timer interval
