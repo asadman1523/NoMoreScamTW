@@ -1,4 +1,4 @@
-# NoMoreScamTW 🛡️
+# NoMoreScamTW
 
 **NoMoreScamTW** 是一個 Chrome 瀏覽器擴充功能，旨在保護使用者免受詐騙網站的侵害。它會自動比對政府公開的詐騙網站清單，當您瀏覽到可疑網站時，即時跳出紅色警示視窗，防止個人資料或財產受損。
 
@@ -42,7 +42,7 @@
 
 ## 📊 資料來源
 
-本專案使用 **[政府資料開放平臺](https://data.gov.tw/)** 提供之 **[詐騙網站清單](https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download)**。
+本專案使用 **[政府資料開放平臺](https://data.gov.tw/)** 提供之 **[詐騙網站清單](https://data.gov.tw/dataset/160055)**。
 
 > **免責聲明**：本擴充功能依賴公開資料進行判斷，無法保證能攔截所有詐騙網站，亦可能會有誤判情形。請保持警覺，切勿隨意在不明網站提供個人資訊。
 
