@@ -5,20 +5,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load initial status
     updateStatus();
 
-    updateBtn.addEventListener('click', () => {
-        updateBtn.disabled = true;
-        updateBtn.textContent = '更新中...';
-
-        chrome.runtime.sendMessage({ action: 'forceUpdate' }, (response) => {
-            updateBtn.disabled = false;
-            updateBtn.textContent = '更新資料庫';
-
+    document.getElementById('updateBtn').addEventListener('click', () => {
+        chrome.runtime.sendMessage({ action: 'updateDatabase' }, (response) => {
             if (response && response.success) {
                 updateStatus();
+                alert('資料庫更新成功！');
             } else {
-                statusDiv.textContent = '更新失敗，請檢查網路連線。';
+                const errorMsg = response && response.error ? response.error : '未知錯誤';
+                alert('更新失敗：' + errorMsg);
             }
         });
+    });
+
+    // Initialize Setting
+    const showLeaveBtn = document.getElementById('showLeaveBtn');
+    chrome.storage.local.get(['showLeaveBtn'], (result) => {
+        // Default to false (unchecked) if undefined
+        showLeaveBtn.checked = result.showLeaveBtn || false;
+    });
+
+    showLeaveBtn.addEventListener('change', (e) => {
+        chrome.storage.local.set({ showLeaveBtn: e.target.checked });
     });
 
     async function updateStatus() {
@@ -50,4 +57,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             statusDiv.textContent = '資料庫尚未初始化。';
         }
     }
+    // Footer Links Handlers
+    document.getElementById('githubLink').addEventListener('click', (e) => {
+        e.preventDefault();
+        chrome.tabs.create({ url: 'https://github.com/asadman1523/NoMoreScamTW' });
+    });
+
+    document.getElementById('opayBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        chrome.tabs.create({ url: 'https://p.opay.tw/qRHBb' });
+    });
+
+    document.getElementById('paypalBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        chrome.tabs.create({ url: 'https://www.paypal.com/ncp/payment/C6KHB3JZYZU5Y' });
+    });
 });

@@ -28,7 +28,8 @@ global.chrome = {
         onAlarm: { addListener: (callback) => { global.alarmCallback = callback; } }
     },
     tabs: {
-        onUpdated: { addListener: () => { } }
+        onUpdated: { addListener: () => { } },
+        create: (info) => { console.log('建立分頁:', info.url); }
     }
 };
 

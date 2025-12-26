@@ -65,10 +65,39 @@
     正在檢查資料庫狀態...
   </div>
 
+  <div class="settings"
+    style="margin: 15px 0; padding: 10px; background-color: #f9f9f9; border-radius: 6px; font-size: 13px;">
+    <div style="margin-bottom: 5px; font-weight: bold;">設定</div>
+    <label style="display: flex; align-items: center; cursor: pointer;">
+      <input type="checkbox" id="showLeaveBtn" style="margin-right: 8px;">
+      顯示「立即離開」按鈕
+    </label>
+  </div>
+
   <button id="updateBtn">更新資料庫</button>
 
-  <div class="footer">
-    資料來源：政府資料開放平臺
+  <div class="footer"
+    style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+
+    <div style="font-size: 11px; color: #555;">支持作者:</div>
+
+    <!-- O'Pay Button -->
+    <div id="opayBtn" style="cursor: pointer; transition: opacity 0.2s;">
+      <img src="icons/opay.png" alt="歐付寶贊助" style="height: 24px; border-radius: 4px; vertical-align: middle;">
+    </div>
+
+    <!-- PayPal Button -->
+    <div id="paypalBtn" style="cursor: pointer; transition: opacity 0.2s;">
+      <img src="icons/paypal.png" alt="PayPal 贊助" style="height: 24px; border-radius: 4px; vertical-align: middle;">
+    </div>
+
+    <!-- GitHub Link -->
+    <a href="#" id="githubLink"
+      style="color: #666; text-decoration: none; display: flex; align-items: center; gap: 4px; font-size: 13px; margin-left: 5px;">
+      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="24" height="24"
+        style="opacity: 0.8;">
+      Github
+    </a>
   </div>
 
   <script src="popup.js"></script>

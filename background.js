@@ -56,9 +56,11 @@ async function updateDatabase() {
         // 確保下次更新已排程並顯示
         scheduleDailyUpdate();
         console.log(`Database updated. Loaded ${Object.keys(data).length} entries.`);
+        return { success: true, count: Object.keys(data).length };
 
     } catch (error) {
         console.error('Failed to update database:', error);
+        return { success: false, error: error.message || 'Unknown error' };
     }
 }
 
@@ -185,8 +187,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
 // popup 的訊息監聽器
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === 'forceUpdate') {
-        updateDatabase().then(() => sendResponse({ success: true }));
+    if (request.action === 'updateDatabase' || request.action === 'forceUpdate') {
+        updateDatabase().then((result) => sendResponse(result));
         return true; // 保持通道開啟
     }
 });
