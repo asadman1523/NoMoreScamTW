@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize Setting
     const showLeaveBtn = document.getElementById('showLeaveBtn');
+
+    // Set text dynamically to prevent flash
+    document.getElementById('settingsTitle').textContent = '設定';
+    document.getElementById('settingLabel').textContent = '顯示「立即離開」按鈕';
+
     chrome.storage.local.get(['showLeaveBtn'], (result) => {
         // Default to false (unchecked) if undefined
         showLeaveBtn.checked = result.showLeaveBtn || false;
