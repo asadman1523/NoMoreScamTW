@@ -7,12 +7,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('updateBtn').addEventListener('click', () => {
         chrome.runtime.sendMessage({ action: 'updateDatabase' }, (response) => {
+            if (chrome.runtime.lastError) {
+                alert('通訊錯誤：' + chrome.runtime.lastError.message);
+                return;
+            }
             if (response && response.success) {
                 updateStatus();
-                alert('資料庫更新成功！');
+                // alert('資料庫更新成功！\n共 ' + response.count + ' 筆資料。');
             } else {
                 const errorMsg = response && response.error ? response.error : '未知錯誤';
-                alert('更新失敗：' + errorMsg);
+                // Use JSON.stringify for object errors to make them readable
+                const debugInfo = typeof errorMsg === 'object' ? JSON.stringify(errorMsg) : errorMsg;
+                alert('更新失敗：' + debugInfo);
             }
         });
     });

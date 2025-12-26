@@ -188,7 +188,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // popup 的訊息監聽器
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'updateDatabase' || request.action === 'forceUpdate') {
-        updateDatabase().then((result) => sendResponse(result));
+        updateDatabase()
+            .then((result) => {
+                sendResponse(result);
+            })
+            .catch((err) => {
+                console.error('updateDatabase threw error:', err);
+                sendResponse({ success: false, error: err.message });
+            });
+
         return true; // 保持通道開啟
     }
 });
