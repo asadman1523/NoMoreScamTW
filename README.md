@@ -12,14 +12,26 @@
 
 ## 📥 安裝說明
 
-由於此擴充功能尚未上架至 Chrome 線上應用程式商店，請依照以下步驟手動安裝：
+你可以選擇從 Chrome 線上應用程式商店安裝，或是手動載入原始碼版本：
 
-1.  下載此專案程式碼。
+### 1. 官方商店安裝（推薦）
+請至 [Chrome 線上應用程式商店](https://chromewebstore.google.com/detail/emhndljhamhamjilimolbbinpipbkjlh) 點擊 **「加到 Chrome」**。
+
+### 2. 手動安裝（開發者版本）
+1.  下載此專案原始碼。
 2.  開啟 Google Chrome 瀏覽器，在網址列輸入 `chrome://extensions` 並按下 Enter。
 3.  在右上角開啟 **「開發人員模式」 (Developer mode)**。
 4.  點擊左上角的 **「載入未封裝項目」 (Load unpacked)** 按鈕。
-5.  選擇此專案的資料夾 (`fraud-guard-extension`)。
+5.  選擇此專案的資料夾。
 6.  安裝完成！您會在擴充功能列看到一個藍色的盾牌圖示。
+
+## 🔒 程式碼透明度與驗證
+
+為了確保 GitHub 上的原始碼與 Chrome 線上應用程式商店版本一致，我們建議您可以透過以下方式驗證：
+
+1.  **版本對照**：商店上的版本號會對應 GitHub 上的標籤（Tag）。您可以查看 [Releases](https://github.com/asadman1523/NoMoreScamTW/releases) 頁面以獲取對應版本的原始碼。
+2.  **人工比對**：Chrome 擴充功能的程式碼通常不經過編譯。技術使用者可以使用 [CRX Extractor](https://robwu.nl/crxviewer/) 之類的工具下載商店發布的 `.crx` 檔案，並與此倉庫的檔案進行內容比對。
+3.  **無混淆源碼**：本專案堅持使用原始碼發布，不進行混淆（Obfuscation）或壓縮處理，確保任何人都可以審閱程式碼的行為。
 
 ## 🎮 使用方法
 
