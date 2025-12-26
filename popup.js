@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 updateBtn.style.cursor = 'not-allowed';
             } else {
                 updateBtn.disabled = false;
-                updateBtn.textContent = '更新資料庫';
+                updateBtn.textContent = '手動更新資料庫';
                 updateBtn.style.backgroundColor = '#2196F3';
                 updateBtn.style.cursor = 'pointer';
             }
