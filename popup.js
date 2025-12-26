@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('openTermsBtn').addEventListener('click', () => {
                 chrome.tabs.create({ url: 'welcome.html' });
             });
+            updateBtn.disabled = true; // Cannot update if terms not accepted
             return;
         }
 
@@ -52,6 +53,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             const lastDate = new Date(lastUpdated).toLocaleString();
             const nextDate = nextUpdateTime ? new Date(nextUpdateTime).toLocaleString() : '初始化中...';
             const count = Object.keys(fraudDatabase).length;
+
+            // Check cooldown (5 minutes = 300000 ms)
+            const now = Date.now();
+            const timeDiff = now - lastUpdated;
+            const cooldown = 5 * 60 * 1000;
+
+            if (timeDiff < cooldown) {
+                const remainingMinutes = Math.ceil((cooldown - timeDiff) / 60000);
+                updateBtn.disabled = true;
+                updateBtn.textContent = `更新冷卻中 (${remainingMinutes} 分鐘)`;
+                updateBtn.style.backgroundColor = '#ccc';
+                updateBtn.style.cursor = 'not-allowed';
+            } else {
+                updateBtn.disabled = false;
+                updateBtn.textContent = '更新資料庫';
+                updateBtn.style.backgroundColor = '#2196F3';
+                updateBtn.style.cursor = 'pointer';
+            }
 
             statusDiv.innerHTML = `
         <strong>資料庫狀態：正常</strong><br>
@@ -61,6 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
         } else {
             statusDiv.textContent = '資料庫尚未初始化。';
+            updateBtn.disabled = false;
         }
     }
     // Footer Links Handlers
