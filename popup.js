@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('settingsTitle').textContent = '設定';
     document.getElementById('settingLabel').textContent = '顯示「立即離開」按鈕';
 
+    // Set Version
+    const manifest = chrome.runtime.getManifest();
+    document.getElementById('version').textContent = `v${manifest.version}`;
+
     chrome.storage.local.get(['showLeaveBtn'], (result) => {
         // Default to false (unchecked) if undefined
         showLeaveBtn.checked = result.showLeaveBtn || false;

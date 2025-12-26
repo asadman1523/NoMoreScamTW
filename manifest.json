@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NoMoreScamTW",
-  "version": "1.0",
+  "version": "2.0",
   "description": "瀏覽到政府公告之詐騙網站時自動跳出警示。",
   "permissions": [
     "storage",

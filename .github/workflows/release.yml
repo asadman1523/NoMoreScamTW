@@ -1,0 +1,29 @@
+name: Release Chrome Extension
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create ZIP archive
+        run: |
+          # Zip all files excluding git/dev artifacts
+          zip -r NoMoreScamTW.zip . -x "*.git*" ".github/*" "test_logic.js" ".gitignore" "node_modules/*" "package-lock.json" "package.json"
+
+      - name: Release and Upload Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: NoMoreScamTW.zip
+          generate_release_notes: true
