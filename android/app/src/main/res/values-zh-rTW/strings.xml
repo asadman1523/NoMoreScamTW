@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">NoMoreScamTW</string>
+    <string name="warning_title">⚠️ 偵測到詐騙網站，請注意資金安全</string>
+    <string name="warning_default_detail">此網站已被列入政府詐騙清單</string>
+    <string name="db_status">資料庫狀態：已載入 %1$d 筆資料</string>
+    <string name="btn_update">更新資料庫</string>
+    <string name="url_hint">輸入網址進行檢查</string>
+    <string name="btn_check">檢查網址</string>
+    <string name="result_placeholder">檢查網址以查看結果</string>
+    <string name="msg_safe">✅ 目前安全 (不在資料庫中)</string>
+    <string name="msg_scam_detected">⚠️ 偵測到詐騙網址</string>
+    <string name="toast_updating">更新中...</string>
+    <string name="toast_update_finished">更新完成</string>
+    <string name="label_name">名稱</string>
+    <string name="label_count">回報次數</string>
+    <string name="label_url">網址</string>
+
+    <!-- Permission Activity -->
+    <string name="perm_title">需要權限</string>
+    <string name="perm_overlay_title">顯示在其他應用程式上層</string>
+    <string name="perm_overlay_desc">需要此權限才能在偵測到詐騙網站時立即顯示紅色警示橫幅。</string>
+    <string name="perm_access_title">無障礙服務</string>
+    <string name="perm_access_desc">需要此權限才能偵測您瀏覽器中的網址，以比對詐騙資料庫。</string>
+    <string name="btn_grant">授權</string>
+    <string name="btn_granted">✅ 已授權</string>
+    <string name="btn_continue">進入 App</string>
+
+    <!-- Update Info -->
+    <string name="last_updated">上次更新：%s</string>
+    <string name="next_update">下次自動更新：%s</string>
+    <string name="never_updated">從未</string>
+
+    <!-- Disclaimer Activity -->
+    <string name="disclaimer_title">免責聲明</string>
+    <string name="disclaimer_content">本應用程式使用政府公開資料來協助識別潛在的詐騙網站。\n\n然而，開發者不保證資料的 100% 正確性或完整性。請使用者隨時保持警覺，切勿輕易提供個人資訊。\n\n點擊「同意並繼續」即代表您同意使用條款。</string>
+    <string name="btn_accept">同意並繼續</string>
+
+    <!-- Permission Flow -->
+    <string name="perm_overlay_header">步驟 1：懸浮視窗權限</string>
+    <string name="perm_access_header">步驟 2：無障礙服務設定</string>
+    <string name="btn_next">下一步</string>
+    <string name="btn_open_settings">前往設定</string>
+
+    <!-- Update Logic -->
+    <string name="update_cooldown">請等待 %1$d 分鐘後再嘗試更新。</string>
+    <string name="auto_update_started">正在自動更新資料庫...</string>
+    <string name="btn_leave">立即離開</string>
+    <string name="btn_continue_browsing">繼續瀏覽</string>
+    <string name="option_show_leave">顯示「立即離開」按鈕</string>
+</resources>

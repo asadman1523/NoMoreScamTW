@@ -1,4 +1,4 @@
-name: Release Chrome Extension
+name: Release Extension & App
 
 on:
   push:
@@ -9,21 +9,45 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: Create Release
+  build-and-release:
+    name: Build and Create Release
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create ZIP archive
+      # --- Chrome Extension ---
+      - name: Package Chrome Extension
         run: |
-          # Zip all files excluding git/dev artifacts
-          zip -r NoMoreScamTW.zip . -x "*.git*" ".github/*" "test_logic.js" ".gitignore" "node_modules/*" "package-lock.json" "package.json"
+          cd extension
+          zip -r ../NoMoreScamTW_Extension.zip . -x "*.git*" "test_logic.js" ".gitignore" "node_modules/*"
+          cd ..
 
+      # --- Android App ---
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x android/gradlew
+
+      - name: Build Android APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+          # Find and move APK to root
+          find app/build/outputs/apk/debug -name "*.apk" -exec cp {} ../NoMoreScamTW_Android.apk \;
+          cd ..
+
+      # --- Release ---
       - name: Release and Upload Assets
         uses: softprops/action-gh-release@v1
         with:
-          files: NoMoreScamTW.zip
+          files: |
+            NoMoreScamTW_Extension.zip
+            NoMoreScamTW_Android.apk
           generate_release_notes: true

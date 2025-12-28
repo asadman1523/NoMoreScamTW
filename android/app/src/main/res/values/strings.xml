@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">NoMoreScamTW</string>
+    <string name="warning_title">⚠️ Scam Website Detected, please be careful with your funds</string>
+    <string name="warning_default_detail">This site is on the government\'s scam list.</string>
+    <string name="db_status">Database Status: Loaded %1$d entries</string>
+    <string name="btn_update">Update Database</string>
+    <string name="url_hint">Enter URL to check</string>
+    <string name="btn_check">Check URL</string>
+    <string name="result_placeholder">Check a URL to see results</string>
+    <string name="msg_safe">✅ Safe (Not in database)</string>
+    <string name="msg_scam_detected">⚠️ Scam detected</string>
+    <string name="toast_updating">Updating...</string>
+    <string name="toast_update_finished">Update Finished</string>
+    <string name="label_name">Name</string>
+    <string name="label_count">Report Count</string>
+    <string name="label_url">URL</string>
+    
+    <!-- Permission Activity -->
+    <string name="perm_title">Required Permissions</string>
+    <string name="perm_overlay_title">Display Over Other Apps</string>
+    <string name="perm_overlay_desc">Required to show the red warning banner immediately when a scam website is detected.</string>
+    <string name="perm_access_title">Accessibility Service</string>
+    <string name="perm_access_desc">Required to detect the URL you are visiting in your browser to compare it against the scam database.</string>
+    <string name="btn_grant">Grant</string>
+    <string name="btn_granted">✅ Granted</string>
+    <string name="btn_continue">Continue to App</string>
+    
+    <!-- Update Info -->
+    <string name="last_updated">Last Updated: %s</string>
+    <string name="next_update">Next Auto Update: %s</string>
+    <string name="never_updated">Never</string>
+
+    <!-- Disclaimer Activity -->
+    <string name="disclaimer_title">Disclaimer</string>
+    <string name="disclaimer_content">This application uses public data from the government to help identify potential scam websites.\n\nHowever, the developer does not guarantee 100% accuracy. Please always remain vigilant.\n\nBy clicking "Accept", you agree to the terms of use.</string>
+    <string name="btn_accept">Accept &amp; Continue</string>
+
+    <!-- Permission Flow -->
+    <string name="perm_overlay_header">Step 1: Overlay Permission</string>
+    <string name="perm_access_header">Step 2: Accessibility Service</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_open_settings">Open Settings</string>
+
+    <!-- Update Logic -->
+    <string name="update_cooldown">Please wait %1$d minutes before updating again.</string>
+    <string name="auto_update_started">Auto-updating database...</string>
+    <string name="btn_leave">Leave</string>
+    <string name="btn_continue_browsing">Continue Browsing</string>
+    <string name="option_show_leave">Show \"Leave Immediately\" button</string>
+</resources>
