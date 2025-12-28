@@ -48,13 +48,31 @@
             android:orientation="vertical"
             android:padding="16dp">
             
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/app_icon"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"/>
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/app_icon"
+                    android:layout_marginEnd="12dp"/>
+
+                <TextView
+                    android:id="@+id/tvVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="v1.0"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvStatus"
@@ -71,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="Last Updated: Never"
                 android:textSize="14sp"
-                android:textColor="#555555"
+                android:textColor="?android:attr/textColorSecondary"
                 android:layout_marginBottom="4dp"/>
                 
             <TextView
@@ -80,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="Next Auto Update: Unknown"
                 android:textSize="14sp"
-                android:textColor="#555555"
+                android:textColor="?android:attr/textColorSecondary"
                 android:layout_marginBottom="16dp"/>
 
             <Button
@@ -103,7 +121,7 @@
                 android:id="@+id/etUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/url_hint"
+                android:hint="@string/url_example"
                 android:inputType="textUri"
                 android:layout_marginBottom="8dp"/>
 
@@ -122,9 +140,32 @@
                 android:gravity="center"
                 android:text="@string/result_placeholder"
                 android:textSize="16sp"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:id="@+id/tvContactAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/link_contact_author"
+                android:textSize="14sp"
+                android:textColor="@color/primary_blue"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"/>
 
         </LinearLayout>
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

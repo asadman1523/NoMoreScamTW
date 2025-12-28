@@ -32,7 +32,7 @@
             android:id="@+id/ivTutorial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="300dp"
+            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:src="@drawable/accessibility_tutorial"
             android:scaleType="fitCenter"
@@ -67,7 +67,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_continue"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnDebugSkip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_debug_skip"
+            android:backgroundTint="#9C27B0"
+            android:visibility="gone"
+            tools:visibility="visible"
+            xmlns:tools="http://schemas.android.com/tools"/>
     </LinearLayout>
 
 </LinearLayout>

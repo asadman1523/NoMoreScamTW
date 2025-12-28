@@ -4,7 +4,8 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/primary_blue</item>
         <item name="colorPrimaryVariant">@color/primary_blue_dark</item>
-        <item name="android:statusBarColor">@color/primary_blue_dark</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.NoMoreScamTW" parent="Base.Theme.NoMoreScamTW" />

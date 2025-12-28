@@ -31,8 +31,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="300dp"
             android:adjustViewBounds="true"
+            android:layout_weight="1"
             android:src="@drawable/overlay_tutorial"
             android:scaleType="fitCenter"
             android:layout_marginBottom="16dp"/>

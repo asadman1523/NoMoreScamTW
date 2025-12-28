@@ -51,6 +51,32 @@ class MainActivity : AppCompatActivity() {
         etUrl = findViewById(R.id.etUrl)
         btnCheck = findViewById(R.id.btnCheck)
         tvSafeResult = findViewById(R.id.tvSafeResult)
+
+        try {
+            val tvVersion = findViewById<TextView>(R.id.tvVersion)
+            val pInfo = packageManager.getPackageInfo(packageName, 0)
+            tvVersion.text = "v${pInfo.versionName}"
+
+            val showAboutPage = {
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        android.R.anim.fade_in,
+                        android.R.anim.fade_out,
+                        android.R.anim.fade_in,
+                        android.R.anim.fade_out
+                    )
+                    .add(R.id.fragment_container, AboutFragment())
+                    .addToBackStack("about")
+                    .commit()
+            }
+            
+            tvVersion.setOnClickListener { showAboutPage() }
+            
+            findViewById<TextView>(R.id.tvContactAuthor).setOnClickListener { showAboutPage() }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         
         btnUpdate.setTextColor(Color.WHITE)
         btnCheck.setTextColor(Color.WHITE)

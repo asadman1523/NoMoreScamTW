@@ -5,6 +5,7 @@
     <string name="db_status">資料庫狀態：已載入 %1$d 筆資料</string>
     <string name="btn_update">更新資料庫</string>
     <string name="url_hint">輸入網址進行檢查</string>
+    <string name="url_example">例如 http://www.google.com</string>
     <string name="btn_check">檢查網址</string>
     <string name="result_placeholder">檢查網址以查看結果</string>
     <string name="msg_safe">✅ 目前安全 (不在資料庫中)</string>
@@ -47,4 +48,17 @@
     <string name="btn_leave">立即離開</string>
     <string name="btn_continue_browsing">繼續瀏覽</string>
     <string name="option_show_leave">顯示「立即離開」按鈕</string>
+
+    <!-- About Page -->
+    <string name="about_title">關於 NoMoreScamTW</string>
+    <string name="about_author">作者：JackWu</string>
+    <string name="about_email">dm3352andy@gmail.com</string>
+    <string name="mail">信箱：</string>
+    <string name="github">Github：</string>
+    <string name="about_github_link">https://github.com/asadman1523/NoMoreScamTW</string>
+    <string name="about_github_display">github/NoMoreScamTW</string>
+    <string name="about_version">版本：%s</string>
+    <string name="btn_close">關閉</string>
+    <string name="link_contact_author">聯繫作者 / 關於本應用</string>
+    <string name="btn_debug_skip">Debug: 跳過權限 (開發測試用)</string>
 </resources>

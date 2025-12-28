@@ -27,10 +27,22 @@ class PermissionAccessibilityActivity : AppCompatActivity() {
         btnGrant = findViewById(R.id.btnGrantAccess)
         btnNext = findViewById(R.id.btnNextAccess)
         ivTutorial = findViewById(R.id.ivTutorial)
+        val btnDebugSkip = findViewById<Button>(R.id.btnDebugSkip)
         
         // Ensure text is white
         btnGrant.setTextColor(Color.WHITE)
         btnNext.setTextColor(Color.WHITE)
+        btnDebugSkip.setTextColor(Color.WHITE)
+
+        // Show skip button only in debug builds
+        if (BuildConfig.DEBUG) {
+            btnDebugSkip.visibility = android.view.View.VISIBLE
+            btnDebugSkip.setOnClickListener {
+                startActivity(Intent(this, MainActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                finish()
+            }
+        }
 
         playAnimation()
 
