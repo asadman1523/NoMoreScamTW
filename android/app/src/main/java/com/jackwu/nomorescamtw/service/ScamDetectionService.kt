@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.net.Uri
 import android.os.Build
+import android.os.CountDownTimer
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ class ScamDetectionService : AccessibilityService() {
     private var overlayView: View? = null
     private var windowManager: WindowManager? = null
     private var lastCheckedUrl: String = ""
+    private var countdownTimer: CountDownTimer? = null
 
     // Supported browser package names and their URL bar IDs
     private val browserConfig = mapOf(
@@ -128,6 +130,30 @@ class ScamDetectionService : AccessibilityService() {
                 hideOverlay()
             }
 
+            val tvTitle = overlayView!!.findViewById<TextView>(R.id.tvOverlayTitle)
+            val originalTitle = getString(R.string.warning_default_detail)
+
+            // Start 60 second countdown, show close button after 10 seconds, auto leave when finished
+            countdownTimer = object : CountDownTimer(60000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    val secondsRemaining = (millisUntilFinished / 1000).toInt() + 1
+                    tvTitle.text = "$originalTitle ($secondsRemaining)"
+
+                    // Show close button after 10 seconds (50 seconds remaining)
+                    if (secondsRemaining <= 50) {
+                        btnClose.visibility = View.VISIBLE
+                    }
+                }
+
+                override fun onFinish() {
+                    // Auto leave when countdown finishes
+                    hideOverlay()
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
+            }.start()
+
             windowManager?.addView(overlayView, params)
 
         } catch (e: Exception) {
@@ -136,6 +162,9 @@ class ScamDetectionService : AccessibilityService() {
     }
 
     private fun hideOverlay() {
+        countdownTimer?.cancel()
+        countdownTimer = null
+
         if (overlayView != null && windowManager != null) {
             try {
                 windowManager?.removeView(overlayView)
