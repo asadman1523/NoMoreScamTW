@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoMoreScamTW</string>
+    <string name="app_name">麥騙</string>
     <string name="warning_title">⚠️ Scam Website Detected, please be careful with your funds</string>
     <string name="warning_default_detail">This site is on the government\'s scam list.</string>
     <string name="db_status">Database Status: Loaded %1$d entries</string>

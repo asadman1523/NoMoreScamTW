@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoMoreScamTW</string>
+    <string name="app_name">麥騙</string>
     <string name="warning_title">⚠️ 偵測到詐騙網站，請立即離開</string>
     <string name="warning_default_detail">此網站已被列入政府詐騙清單</string>
     <string name="db_status">資料庫狀態：已載入 %1$d 筆資料</string>
@@ -50,7 +50,7 @@
     <string name="option_show_leave">顯示「立即離開」按鈕</string>
 
     <!-- About Page -->
-    <string name="about_title">關於 NoMoreScamTW</string>
+    <string name="about_title">關於 麥騙</string>
     <string name="about_author">作者：JackWu</string>
     <string name="about_email">dm3352andy@gmail.com</string>
     <string name="mail">信箱：</string>
