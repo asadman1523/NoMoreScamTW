@@ -1,25 +1,25 @@
-NoMoreScamTW iOS Extension
+NoMoreScamTW iOS 擴充功能
 ========================
 
-This folder contains the source code for the Safari Web Extension.
+此資料夾包含 Safari 網頁擴充功能的原始碼。
 
-To run this on an iOS device (iPhone/iPad):
+若要在 iOS 裝置 (iPhone/iPad) 上執行：
 
-1.  **Prerequisites**:
-    *   A Mac computer running macOS.
-    *   Xcode installed (free from the Mac App Store).
-    *   An Apple ID (free developer account is sufficient for local testing).
+1.  **前置需求**：
+    *   一台執行 macOS 的 Mac 電腦。
+    *   已安裝 Xcode (可從 Mac App Store 免費下載)。
+    *   一個 Apple ID (免費開發者帳號即可進行本機測試)。
 
-2.  **Conversion Steps**:
-    *   Open Terminal on your Mac.
-    *   Run the following command:
+2.  **轉換步驟**：
+    *   在 Mac 上開啟終端機 (Terminal)。
+    *   執行以下指令：
         `xcrun safari-web-extension-converter /path/to/NoMoreScamTW`
-        (Replace `/path/to/NoMoreScamTW` with the actual path to the folder containing `manifest.json` inside this directory).
-    *   Xcode will launch and prompt you to create a new project.
-    *   Select "Swift" as the language.
-    *   Once the project is verified, you can select a simulator or a connected physical device to run the app.
+        (請將 `/path/to/NoMoreScamTW` 替換為此目錄中包含 `manifest.json` 的實際資料夾路徑)。
+    *   Xcode 將會啟動並提示您建立新專案。
+    *   選擇 "Swift" 作為開發語言。
+    *   專案驗證完成後，您可以選擇模擬器或已連接的實體裝置來執行應用程式。
 
-3.  **Notes**:
-    *   The `manifest.json` is based on Manifest V3, which is supported by Safari on iOS 15+.
-    *   The `background.js` (Service Worker) is supported.
-    *   The fraud database update logic runs in the background. Note that iOS Safari imposes stricter resource limits on background scripts compared to Chrome Desktop.
+3.  **注意事項**：
+    *   `manifest.json` 基於 Manifest V3，Safari on iOS 15+ 皆有支援。
+    *   支援 `background.js` (Service Worker)。
+    *   詐騙資料庫更新邏輯會在背景執行。請注意，與 Chrome 桌面版相比，iOS Safari 對背景腳本有更嚴格的資源限制。
