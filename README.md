@@ -1,4 +1,4 @@
-# NoMoreScamTW
+# NoMoreScamTW 麥騙
 
 **NoMoreScamTW** 是一個開源的反詐騙專案，旨在保護台灣使用者免受惡意與詐騙網站的侵害。本專案包含 Chrome 瀏覽器擴充功能與 Android 應用程式。
 
