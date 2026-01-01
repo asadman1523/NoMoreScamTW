@@ -16,6 +16,12 @@
 *   **描述**: 適用於 Android 手機。利用無障礙服務 (Accessibility Service) 監控手機瀏覽器，當偵測到詐騙網址時，會顯示懸浮警示橫幅。
 *   [查看詳細說明](./android/README.md)
 
+### 3. 🍎 [iOS Extension (Safari 擴充功能)](./ios/)
+*   **目錄**: [`ios/`](./ios/)
+*   **描述**: 適用於 iPhone/iPad 的 Safari 瀏覽器擴充功能。
+*   **注意**: iOS 版本目前以原始碼形式提供，需使用 Xcode 將 Web Extension 轉換為 iOS App 才能安裝。
+*   [查看詳細說明](./ios/README.txt)
+
 ## 🤝 貢獻與授權
 
 歡迎提交 Pull Request 或 Issue 來協助改進本專案。
