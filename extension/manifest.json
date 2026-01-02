@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "麥騙",
+  "default_locale": "en",
+  "name": "__MSG_appName__",
   "version": "2.1",
-  "description": "瀏覽到政府公告之詐騙網站時自動跳出警示。",
+  "description": "__MSG_appDesc__",
   "permissions": [
     "storage",
     "tabs",

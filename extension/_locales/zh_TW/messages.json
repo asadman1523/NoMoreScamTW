@@ -1,0 +1,10 @@
+{
+    "appName": {
+        "message": "麥騙",
+        "description": "The name of the extension"
+    },
+    "appDesc": {
+        "message": "瀏覽到政府公告之詐騙網站時自動跳出警示。",
+        "description": "The description of the extension"
+    }
+}

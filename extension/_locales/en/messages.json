@@ -1,0 +1,10 @@
+{
+    "appName": {
+        "message": "NoMoreScamTW",
+        "description": "The name of the extension"
+    },
+    "appDesc": {
+        "message": "Automatically warns you when visiting fraudulent websites listed by the government.",
+        "description": "The description of the extension"
+    }
+}
