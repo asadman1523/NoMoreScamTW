@@ -18,7 +18,10 @@ jobs:
       - name: Download Fraud CSV
         run: |
           mkdir -p data
-          curl -L -o data/fraud_list.csv "https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download"
+          # -f: Fail silently (no output at all) on HTTP errors
+          # --retry 5: Retry request if transient problems occur
+          # --retry-delay 10: Wait 10 seconds between retries
+          curl -f -L --retry 5 --retry-delay 10 -o data/fraud_list.csv "https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download"
 
       - name: Check for changes
         id: check_changes
