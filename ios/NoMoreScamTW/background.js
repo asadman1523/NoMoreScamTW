@@ -1,4 +1,4 @@
-const CONFIG_URL = 'https://raw.githubusercontent.com/asadman1523/NoMoreScamTW/main/server_config.json';
+const CONFIG_URL = 'https://cdn.jsdelivr.net/gh/asadman1523/NoMoreScamTW@main/server_config.json';
 const DEFAULT_DATA_URL = 'https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download';
 
 // In-memory cache for the database
