@@ -15,7 +15,31 @@ class FraudRepository(
 
     suspend fun updateDatabase(): Result<Int> = withContext(Dispatchers.IO) {
         try {
-            val csvContent = apiService.downloadDatabase()
+            // 1. Fetch Remote Config
+            val configUrl = "https://raw.githubusercontent.com/asadman1523/NoMoreScamTW/main/server_config.json"
+            val defaultDataUrl = "https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download"
+            
+            var targetUrl = defaultDataUrl
+            
+            try {
+                // Use a standard HTTP request to get the config
+                // Since we don't have a dedicated API service for GitHub, we can use a basic URL connection or if we have OkHttp client exposed? 
+                // We passed ApiService which uses Retrofit. We can't easily retrieve the OkHttp client from it without casting.
+                // Simpler: Just use java.net.URL for the config fetch since it's simple JSON.
+                
+                val configJson = java.net.URL(configUrl).readText()
+                // Simple parser since we don't want to add Gson/Moshi just for this one field if not already there.
+                // Pattern: "csv_url": "..."
+                val match = Regex("\"csv_url\"\\s*:\\s*\"([^\"]+)\"").find(configJson)
+                if (match != null) {
+                    targetUrl = match.groupValues[1]
+                }
+            } catch (e: Exception) {
+                Log.w("FraudRepository", "Failed to fetch config, using default", e)
+            }
+
+            Log.d("FraudRepository", "Downloading DB from: $targetUrl")
+            val csvContent = apiService.downloadDatabase(targetUrl)
             val lines = csvContent.lines()
             val sites = mutableListOf<FraudSite>()
             

@@ -1,4 +1,5 @@
-const DATA_URL = 'https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download';
+const CONFIG_URL = 'https://raw.githubusercontent.com/asadman1523/NoMoreScamTW/main/server_config.json';
+const DEFAULT_DATA_URL = 'https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download';
 
 // In-memory cache for the database
 let cachedDatabase = null;
@@ -6,8 +7,23 @@ let cachedDatabase = null;
 // 擷取並更新詐騙資料庫
 async function updateDatabase() {
     try {
-        console.log('Fetching fraud database...');
-        const response = await fetch(DATA_URL);
+        console.log('Fetching remote config...');
+        let dataUrl = DEFAULT_DATA_URL;
+
+        try {
+            const configResponse = await fetch(CONFIG_URL);
+            if (configResponse.ok) {
+                const config = await configResponse.json();
+                if (config.csv_url) {
+                    dataUrl = config.csv_url;
+                }
+            }
+        } catch (configError) {
+            console.warn('Failed to fetch config, using default:', configError);
+        }
+
+        console.log(`Fetching fraud database from: ${dataUrl}`);
+        const response = await fetch(dataUrl);
         const text = await response.text();
         const lines = text.split(/\r?\n/);
 
