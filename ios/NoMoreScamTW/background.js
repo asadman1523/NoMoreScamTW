@@ -8,22 +8,33 @@ let cachedDatabase = null;
 async function updateDatabase() {
     try {
         console.log('Fetching remote config...');
-        let dataUrl = DEFAULT_DATA_URL;
+        let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/160055'; // Default
 
         try {
             const configResponse = await fetch(CONFIG_URL);
             if (configResponse.ok) {
                 const config = await configResponse.json();
-                if (config.csv_url) {
-                    dataUrl = config.csv_url;
+                if (config.fraud_api_url) {
+                    govApiUrl = config.fraud_api_url;
                 }
             }
         } catch (configError) {
-            console.warn('Failed to fetch config, using default:', configError);
+            console.warn('Failed to fetch config, using default Gov API URL:', configError);
         }
 
-        console.log(`Fetching fraud database from: ${dataUrl}`);
-        const response = await fetch(dataUrl);
+        console.log(`Fetching metadata from Gov API: ${govApiUrl}`);
+        const govResponse = await fetch(govApiUrl);
+        if (!govResponse.ok) throw new Error('Gov API fetch failed');
+
+        const govJson = await govResponse.json();
+        const downloadUrl = govJson?.result?.distribution?.[0]?.resourceDownloadUrl;
+
+        if (!downloadUrl) throw new Error('Could not find download URL in Gov API JSON');
+
+        console.log(`Downloading CSV from: ${downloadUrl}`);
+        const response = await fetch(downloadUrl);
+        if (!response.ok) throw new Error('CSV download failed');
+
         const text = await response.text();
         const lines = text.split(/\r?\n/);
 
