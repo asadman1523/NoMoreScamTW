@@ -1,8 +1,56 @@
-const CONFIG_URL = 'https://cdn.jsdelivr.net/gh/asadman1523/NoMoreScamTW@main/server_config.json';
-const DEFAULT_DATA_URL = 'https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/033197D4-70F4-45EB-9FB8-6D83532B999A/resource/D24B474A-9239-44CA-8177-56D7859A31F6/download';
+// IndexedDB Helper
+const DB_NAME = 'FraudDB';
+const STORE_NAME = 'sites';
+const DB_VERSION = 1;
 
-// In-memory cache for the database
-let cachedDatabase = null;
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME);
+            }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+async function saveToIndexedDB(data) {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+
+    // Clear old data first
+    await new Promise((resolve, reject) => {
+        const clearReq = store.clear();
+        clearReq.onsuccess = () => resolve();
+        clearReq.onerror = () => reject(clearReq.error);
+    });
+
+    // Bulk add
+    for (const [url, info] of Object.entries(data)) {
+        store.put(info, url);
+    }
+
+    return new Promise((resolve, reject) => {
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+async function getFromIndexedDB(url) {
+    const db = await openDB();
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.get(url);
+
+    return new Promise((resolve, reject) => {
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
 
 // 擷取並更新詐騙資料庫
 async function updateDatabase() {
@@ -79,11 +127,16 @@ async function updateDatabase() {
 
         const totalEntries = lines.length - 2;
 
+        // Save metadata to storage.local
         await chrome.storage.local.set({
-            fraudDatabase: data,
             lastUpdated: Date.now(),
-            totalEntries: totalEntries
+            totalEntries: totalEntries,
+            lastError: null // Clear error
         });
+
+        // Save big data to IndexedDB
+        await saveToIndexedDB(data);
+
         cachedDatabase = data; // Update cache
 
         // 確保下次更新已排程並顯示
@@ -105,41 +158,43 @@ async function updateDatabase() {
 // 檢查 URL 是否在資料庫中
 async function checkUrl(url) {
     try {
-        // Use cache if available, otherwise load from storage
-        if (!cachedDatabase) {
-            const { fraudDatabase } = await chrome.storage.local.get('fraudDatabase');
-            cachedDatabase = fraudDatabase || {};
-        }
-
-        if (!cachedDatabase || Object.keys(cachedDatabase).length === 0) return null;
-
         const urlObj = new URL(url);
         const hostname = urlObj.hostname;
 
-        // Helper to check domain against DB
-        const check = (domain) => {
-            return cachedDatabase[domain] || null;
+        // Use cache if available
+        if (cachedDatabase && Object.keys(cachedDatabase).length > 0) {
+            const checkCache = (domain) => cachedDatabase[domain] || null;
+            let res = checkCache(hostname);
+            if (!res && hostname.startsWith('www.')) res = checkCache(hostname.slice(4));
+            if (!res && !hostname.startsWith('www.')) res = checkCache('www.' + hostname);
+            if (res) return res;
+        }
+
+        // Fallback or Initial check from IndexedDB
+        const checkDB = async (domain) => {
+            try {
+                return await getFromIndexedDB(domain);
+            } catch (e) { return null; }
         };
 
         // 1. Check exact match
-        let result = check(hostname);
+        let result = await checkDB(hostname);
         if (result) return result;
 
         // 2. Check w/o 'www.' if present
         if (hostname.startsWith('www.')) {
-            result = check(hostname.slice(4));
+            result = await checkDB(hostname.slice(4));
             if (result) return result;
         }
 
         // 3. Check w/ 'www.' if missing
         if (!hostname.startsWith('www.')) {
-            result = check('www.' + hostname);
+            result = await checkDB('www.' + hostname);
             if (result) return result;
         }
 
         return null;
     } catch (e) {
-        // 無效的 URL
         return null;
     }
 }

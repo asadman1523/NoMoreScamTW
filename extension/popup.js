@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     async function updateStatus() {
-        const { fraudDatabase, lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
+        const { lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
 
         // Set Default Button Text if nothing else happens
         updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
@@ -62,10 +62,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        if (fraudDatabase && lastUpdated) {
+        if (lastUpdated) {
             const lastDate = new Date(lastUpdated).toLocaleString();
             const nextDate = nextUpdateTime ? new Date(nextUpdateTime).toLocaleString() : '...';
-            const count = totalEntries || Object.keys(fraudDatabase).length;
+            const count = totalEntries || 0;
 
             // Check cooldown (5 minutes = 300000 ms)
             const now = Date.now();
@@ -88,7 +88,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${chrome.i18n.getMessage('totalRecordsLabel') || 'Total Records:'} ${count}
       `;
         } else {
-            statusDiv.textContent = chrome.i18n.getMessage('dbInitializing') || 'Initializing...';
+            const { lastError } = await chrome.storage.local.get('lastError');
+            if (lastError) {
+                statusDiv.innerHTML = `
+                    <div style="color: #d93025; margin-bottom: 5px;">${chrome.i18n.getMessage('dbInitializing') || 'Initializing...'}</div>
+                    <div style="font-size: 11px; color: #999;">Error: ${lastError}</div>
+                `;
+            } else {
+                statusDiv.textContent = chrome.i18n.getMessage('dbInitializing') || 'Initializing...';
+            }
             updateBtn.disabled = false;
             updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
         }

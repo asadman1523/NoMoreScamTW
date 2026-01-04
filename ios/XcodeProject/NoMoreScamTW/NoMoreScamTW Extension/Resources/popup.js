@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     async function updateStatus() {
-        const { fraudDatabase, lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
+        const { lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
 
         // Set Default Button Text if nothing else happens
         updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
@@ -62,10 +62,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        if (fraudDatabase && lastUpdated) {
+        if (lastUpdated) {
             const lastDate = new Date(lastUpdated).toLocaleString();
             const nextDate = nextUpdateTime ? new Date(nextUpdateTime).toLocaleString() : '...';
-            const count = totalEntries || Object.keys(fraudDatabase).length;
+            const count = totalEntries || 0;
 
             // Check cooldown (5 minutes = 300000 ms)
             const now = Date.now();
