@@ -28,7 +28,11 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        // Override point for customization.
+        if message.name == "controller" && message.body as? String == "openSettings" {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+        }
     }
 
 }

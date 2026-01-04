@@ -1,5 +1,6 @@
 * {
     -webkit-user-select: none;
+    user-select: none;
     -webkit-user-drag: none;
     cursor: default;
 }
@@ -21,9 +22,37 @@ body {
     flex-direction: column;
 
     gap: var(--spacing);
-    margin: 0 calc(var(--spacing) * 2);
+    margin: 0 40px;
     height: 100%;
 
-    font: -apple-system-short-body;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     text-align: center;
+    background-color: #ffffff;
+}
+
+.instructions {
+    text-align: left;
+    background: #f8f9fa;
+    padding: 24px;
+    border-radius: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.instructions h2 {
+    margin-top: 0;
+    font-size: 22px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.instructions p {
+    margin: 12px 0;
+    font-size: 16px;
+    color: #444;
+}
+
+b {
+    color: #2196F3;
 }

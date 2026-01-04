@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
@@ -8,8 +9,44 @@
 
     <link rel="stylesheet" href="../Style.css">
 </head>
+
 <body>
-    <img src="../Icon.png" width="128" height="128" alt="NoMoreScamTW Icon">
-    <p>You can turn on NoMoreScamTW’s Safari extension in Settings.</p>
+    <img src="../Icon.png" width="96" height="96" alt="NoMoreScamTW Icon"
+        style="border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+    <div class="instructions">
+        <h2 id="title">歡迎使用 麥騙</h2>
+        <p id="step1">1. 打開 <b>「設定」</b> App</p>
+        <p id="step2">2. 點擊 <b>「Safari」</b> > <b>「延伸功能」</b></p>
+        <p id="step3">3. 將 <b>「麥騙」</b> 開啟並允許存取網站</p>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+        <p style="font-size: 14px; color: #666;">
+            1. Open <b>Settings</b> app<br>
+            2. Tap <b>Safari</b> > <b>Extensions</b><br>
+            3. Turn on <b>NoMoreScamTW</b>
+        </p>
+    </div>
+
+    <button onclick="openSettings()" style="
+        background: #2196F3;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        max-width: 250px;
+    ">打開 Safari 設定</button>
+
+    <script>
+        function openSettings() {
+            window.webkit.messageHandlers.controller.postMessage("openSettings");
+        }
+    </script>
 </body>
+
 </html>
