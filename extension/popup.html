@@ -3,11 +3,20 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       width: 300px;
+      max-width: 100vw;
       padding: 15px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 350px) {
+      body {
+        width: 100%;
+      }
     }
 
     h1 {
@@ -58,7 +67,8 @@
 <body>
   <h1>
     <img src="icons/icon48.png" width="24" height="24">
-    <span id="appName">NoMoreScamTW</span> <span id="version" style="font-size: 10px; color: #999; margin-left: 5px;"></span>
+    <span id="appName">NoMoreScamTW</span> <span id="version"
+      style="font-size: 10px; color: #999; margin-left: 5px;"></span>
   </h1>
 
   <div class="status" id="status">
