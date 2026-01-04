@@ -88,7 +88,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${chrome.i18n.getMessage('totalRecordsLabel') || 'Total Records:'} ${count}
       `;
         } else {
-            statusDiv.textContent = chrome.i18n.getMessage('dbInitializing') || 'Initializing...';
+            const { lastError } = await chrome.storage.local.get('lastError');
+            if (lastError) {
+                statusDiv.innerHTML = `
+                    <div style="color: #d93025; margin-bottom: 5px;">${chrome.i18n.getMessage('dbInitializing') || 'Initializing...'}</div>
+                    <div style="font-size: 11px; color: #999;">Error: ${lastError}</div>
+                `;
+            } else {
+                statusDiv.textContent = chrome.i18n.getMessage('dbInitializing') || 'Initializing...';
+            }
             updateBtn.disabled = false;
             updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
         }

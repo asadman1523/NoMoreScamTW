@@ -93,6 +93,11 @@ async function updateDatabase() {
 
     } catch (error) {
         console.error('Failed to update database:', error);
+        // Log error to storage for debugging in popup
+        chrome.storage.local.set({
+            lastError: error.message || 'Unknown error',
+            lastErrorTs: Date.now()
+        });
         return { success: false, error: error.message || 'Unknown error' };
     }
 }
