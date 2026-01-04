@@ -191,11 +191,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUIStatus() {
         lifecycleScope.launch {
-            val app = application as MyApplication
-            val count = app.repository.getDatabaseSize()
+            val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val count = prefs.getInt("total_entries", 0)
             tvStatus.text = getString(R.string.db_status, count)
             
-            val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val lastUpdate = prefs.getLong(KEY_LAST_DB_UPDATE, 0)
             
             if (lastUpdate > 0) {

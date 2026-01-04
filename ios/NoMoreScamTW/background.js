@@ -77,13 +77,19 @@ async function updateDatabase() {
             }
         }
 
-        await chrome.storage.local.set({ fraudDatabase: data, lastUpdated: Date.now() });
+        const totalEntries = lines.length - 2;
+
+        await chrome.storage.local.set({
+            fraudDatabase: data,
+            lastUpdated: Date.now(),
+            totalEntries: totalEntries
+        });
         cachedDatabase = data; // Update cache
 
         // 確保下次更新已排程並顯示
         scheduleDailyUpdate();
-        console.log(`Database updated. Loaded ${Object.keys(data).length} entries.`);
-        return { success: true, count: Object.keys(data).length };
+        console.log(`Database updated. Loaded ${Object.keys(data).length} unique sites, ${totalEntries} total records.`);
+        return { success: true, count: totalEntries };
 
     } catch (error) {
         console.error('Failed to update database:', error);

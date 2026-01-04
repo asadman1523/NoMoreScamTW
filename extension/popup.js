@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showLeaveBtn = document.getElementById('showLeaveBtn');
 
     // Set text dynamically to prevent flash
-    document.getElementById('settingsTitle').textContent = '設定';
-    document.getElementById('settingLabel').textContent = '顯示「立即離開」按鈕';
+    document.getElementById('appName').textContent = chrome.i18n.getMessage('appName');
+    document.getElementById('settingsTitle').textContent = chrome.i18n.getMessage('settingsTitle');
+    document.getElementById('settingLabel').textContent = chrome.i18n.getMessage('showLeaveBtnLabel');
 
     // Set Version
     const manifest = chrome.runtime.getManifest();
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     async function updateStatus() {
-        const { fraudDatabase, lastUpdated, nextUpdateTime, termsAccepted } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime', 'termsAccepted']);
+        const { fraudDatabase, lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
 
         if (!termsAccepted) {
             statusDiv.innerHTML = `
@@ -60,8 +61,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (fraudDatabase && lastUpdated) {
             const lastDate = new Date(lastUpdated).toLocaleString();
-            const nextDate = nextUpdateTime ? new Date(nextUpdateTime).toLocaleString() : '初始化中...';
-            const count = Object.keys(fraudDatabase).length;
+            const nextDate = nextUpdateTime ? new Date(nextUpdateTime).toLocaleString() : '...';
+            const count = totalEntries || Object.keys(fraudDatabase).length;
 
             // Check cooldown (5 minutes = 300000 ms)
             const now = Date.now();
@@ -71,24 +72,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (timeDiff < cooldown) {
                 const remainingMinutes = Math.ceil((cooldown - timeDiff) / 60000);
                 updateBtn.disabled = true;
-                updateBtn.textContent = `更新冷卻中 (${remainingMinutes} 分鐘)`;
-                updateBtn.style.backgroundColor = '#ccc';
-                updateBtn.style.cursor = 'not-allowed';
+                updateBtn.textContent = `... (${remainingMinutes})`;
             } else {
                 updateBtn.disabled = false;
-                updateBtn.textContent = '手動更新資料庫';
-                updateBtn.style.backgroundColor = '#2196F3';
-                updateBtn.style.cursor = 'pointer';
+                updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || '手動更新資料庫';
             }
 
             statusDiv.innerHTML = `
-        <strong>資料庫狀態：正常</strong><br>
-        最後更新：${lastDate}<br>
-        下次更新：${nextDate}<br>
-        網站數量：${count}
+        <strong>${chrome.i18n.getMessage('databaseStatus')}</strong><br>
+        ${chrome.i18n.getMessage('lastUpdatedLabel')} ${lastDate}<br>
+        ${chrome.i18n.getMessage('nextUpdateLabel')} ${nextDate}<br>
+        ${chrome.i18n.getMessage('totalRecordsLabel')} ${count}
       `;
         } else {
-            statusDiv.textContent = '資料庫尚未初始化。';
+            statusDiv.textContent = '...';
             updateBtn.disabled = false;
         }
     }

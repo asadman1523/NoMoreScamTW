@@ -17,6 +17,12 @@ class UpdateDatabaseWorker(
         val result = repository.updateDatabase()
         
         return if (result.isSuccess) {
+            val count = result.getOrNull() ?: 0
+            applicationContext.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                .edit()
+                .putInt("total_entries", count)
+                .putLong("last_db_update_ts", System.currentTimeMillis())
+                .apply()
             Result.success()
         } else {
             if (runAttemptCount < 3) {
