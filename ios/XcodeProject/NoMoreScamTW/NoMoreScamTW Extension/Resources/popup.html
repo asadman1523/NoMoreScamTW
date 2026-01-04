@@ -64,41 +64,35 @@
 
 <body>
   <h1>
-    <img src="icons/icon48.png" width="24" height="24">
-    <span id="appName">NoMoreScamTW</span> <span id="version"
-      style="font-size: 10px; color: #999; margin-left: 5px;"></span>
+    <img src="icons/icon48.png" width="32" height="32" style="border-radius: 6px;">
+    <span id="appName">NoMoreScamTW</span>
+    <span id="version" style="font-size: 14px; color: #999; margin-left: 8px; font-weight: normal;"></span>
   </h1>
 
-  <div class="status" id="status" style="margin-bottom: 20px;">
-    &nbsp;<br>
-    &nbsp;<br>
-    &nbsp;<br>
-    &nbsp;
+  <div class="status" id="status">
+    <!-- Status content injected by JS -->
+    Loading...
   </div>
 
-  <button id="updateBtn" disabled>&nbsp;</button>
+  <button id="updateBtn" disabled>Update Database</button>
 
   <div class="footer"
-    style="display: flex; flex-direction: row; gap: 15px; justify-content: flex-end; align-items: center; margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px; height: auto;">
-
+    style="display: flex; flex-direction: row; gap: 15px; justify-content: flex-end; align-items: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; height: auto;">
     <div style="font-size: 14px; color: #555; margin-right: auto;">支持作者:</div>
 
-    <!-- O'Pay Button -->
-    <div id="opayBtn" style="cursor: pointer; display: flex; align-items: center; height: 100%;">
-      <img src="icons/opay.png" alt="歐付寶贊助" style="height: 24px; width: auto; display: block;">
+    <div id="opayBtn" style="cursor: pointer; display: flex; align-items: center;">
+      <img src="icons/opay.png" alt="歐付寶" style="height: 28px; width: auto;">
     </div>
 
-    <!-- PayPal Button -->
-    <div id="paypalBtn" style="cursor: pointer; display: flex; align-items: center; height: 100%;">
-      <img src="icons/paypal.png" alt="PayPal 贊助" style="height: 24px; width: auto; display: block;">
+    <div id="paypalBtn" style="cursor: pointer; display: flex; align-items: center;">
+      <img src="icons/paypal.png" alt="PayPal" style="height: 28px; width: auto;">
     </div>
 
-    <!-- GitHub Link -->
     <a href="#" id="githubLink"
-      style="color: #666; text-decoration: none; display: flex; align-items: center; gap: 4px; height: 100%;">
+      style="color: #666; text-decoration: none; display: flex; align-items: center; gap: 4px;">
       <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="28" height="28"
-        style="opacity: 0.9; display: block;">
-      <span style="font-size: 12px; font-weight: 500;">Github</span>
+        style="opacity: 0.8;">
+      <span style="font-size: 14px; font-weight: 500;">Github</span>
     </a>
   </div>
 

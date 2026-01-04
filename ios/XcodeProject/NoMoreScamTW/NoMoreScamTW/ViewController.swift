@@ -15,22 +15,21 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Register the handler. Note: "controller" must match window.webkit.messageHandlers.controller
+        self.webView.configuration.userContentController.add(self, name: "controller")
+
         self.webView.navigationDelegate = self
         self.webView.scrollView.isScrollEnabled = false
 
-        self.webView.configuration.userContentController.add(self, name: "controller")
-
-        self.webView.loadFileURL(Bundle.main.url(forResource: "Main", withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
-    }
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // Override point for customization.
+        if let url = Bundle.main.url(forResource: "Main", withExtension: "html") {
+            self.webView.loadFileURL(url, allowingReadAccessTo: Bundle.main.resourceURL!)
+        }
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "controller" && message.body as? String == "openSettings" {
+        if message.name == "controller", let body = message.body as? String, body == "openSettings" {
             if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url)
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
     }
