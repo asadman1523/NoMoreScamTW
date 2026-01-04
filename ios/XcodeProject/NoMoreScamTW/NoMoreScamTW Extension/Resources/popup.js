@@ -47,15 +47,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function updateStatus() {
         const { fraudDatabase, lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['fraudDatabase', 'lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
 
+        // Set Default Button Text if nothing else happens
+        updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
+
         if (!termsAccepted) {
             statusDiv.innerHTML = `
-                <div style="color: #d93025; margin-bottom: 10px;">⚠️ 尚未同意免責聲明</div>
-                <button id="openTermsBtn" style="background:#4285f4; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">開啟條款頁面</button>
+                <div style="color: #d93025; margin-bottom: 10px;">${chrome.i18n.getMessage('termsNotAccepted') || '⚠️ Disclaimer not accepted'}</div>
+                <button id="openTermsBtn" style="background:#4285f4; color:white; border:none; padding:8px 15px; border-radius:4px; cursor:pointer;">${chrome.i18n.getMessage('btnOpenTerms') || 'Open Terms'}</button>
             `;
             document.getElementById('openTermsBtn').addEventListener('click', () => {
                 chrome.tabs.create({ url: 'welcome.html' });
             });
-            updateBtn.disabled = true; // Cannot update if terms not accepted
+            updateBtn.disabled = true;
             return;
         }
 
@@ -72,21 +75,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (timeDiff < cooldown) {
                 const remainingMinutes = Math.ceil((cooldown - timeDiff) / 60000);
                 updateBtn.disabled = true;
-                updateBtn.textContent = `... (${remainingMinutes})`;
+                updateBtn.textContent = `${chrome.i18n.getMessage('cooldownLabel') || 'Cooldown'} (${remainingMinutes})`;
             } else {
                 updateBtn.disabled = false;
-                updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || '手動更新資料庫';
+                updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
             }
 
             statusDiv.innerHTML = `
-        <strong>${chrome.i18n.getMessage('databaseStatus')}</strong><br>
-        ${chrome.i18n.getMessage('lastUpdatedLabel')} ${lastDate}<br>
-        ${chrome.i18n.getMessage('nextUpdateLabel')} ${nextDate}<br>
-        ${chrome.i18n.getMessage('totalRecordsLabel')} ${count}
+        <strong>${chrome.i18n.getMessage('databaseStatus') || 'Status: Online'}</strong><br>
+        ${chrome.i18n.getMessage('lastUpdatedLabel') || 'Last Updated:'} ${lastDate}<br>
+        ${chrome.i18n.getMessage('nextUpdateLabel') || 'Next Update:'} ${nextDate}<br>
+        ${chrome.i18n.getMessage('totalRecordsLabel') || 'Total Records:'} ${count}
       `;
         } else {
-            statusDiv.textContent = '...';
+            statusDiv.textContent = chrome.i18n.getMessage('dbInitializing') || 'Initializing...';
             updateBtn.disabled = false;
+            updateBtn.textContent = chrome.i18n.getMessage('btnUpdate') || 'Update Database';
         }
     }
     // Footer Links Handlers

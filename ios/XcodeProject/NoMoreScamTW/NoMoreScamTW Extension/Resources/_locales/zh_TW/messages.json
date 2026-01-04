@@ -24,5 +24,20 @@
     },
     "totalRecordsLabel": {
         "message": "資料總數："
+    },
+    "btnUpdate": {
+        "message": "手動更新資料庫"
+    },
+    "dbInitializing": {
+        "message": "資料庫初始化中..."
+    },
+    "termsNotAccepted": {
+        "message": "⚠️ 尚未同意免責聲明"
+    },
+    "btnOpenTerms": {
+        "message": "開啟條款頁面"
+    },
+    "cooldownLabel": {
+        "message": "更新冷卻中"
     }
 }

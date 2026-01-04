@@ -24,5 +24,20 @@
     },
     "totalRecordsLabel": {
         "message": "Total Records:"
+    },
+    "btnUpdate": {
+        "message": "Update Database"
+    },
+    "dbInitializing": {
+        "message": "Database Initializing..."
+    },
+    "termsNotAccepted": {
+        "message": "⚠️ Disclaimer not accepted"
+    },
+    "btnOpenTerms": {
+        "message": "Open Terms"
+    },
+    "cooldownLabel": {
+        "message": "Updating Cooldown"
     }
 }
