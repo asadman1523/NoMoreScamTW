@@ -23,12 +23,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // Initialize Setting
+    const showLeaveBtn = document.getElementById('showLeaveBtn');
+
     // Set text dynamically to prevent flash
     document.getElementById('appName').textContent = chrome.i18n.getMessage('appName');
+    document.getElementById('settingsTitle').textContent = chrome.i18n.getMessage('settingsTitle');
+    document.getElementById('settingLabel').textContent = chrome.i18n.getMessage('showLeaveBtnLabel');
 
     // Set Version
     const manifest = chrome.runtime.getManifest();
     document.getElementById('version').textContent = `v${manifest.version}`;
+
+    chrome.storage.local.get(['showLeaveBtn'], (result) => {
+        // Default to false (unchecked) if undefined
+        showLeaveBtn.checked = result.showLeaveBtn || false;
+    });
+
+    showLeaveBtn.addEventListener('change', (e) => {
+        chrome.storage.local.set({ showLeaveBtn: e.target.checked });
+    });
 
     async function updateStatus() {
         const { lastUpdated, nextUpdateTime, termsAccepted, totalEntries } = await chrome.storage.local.get(['lastUpdated', 'nextUpdateTime', 'termsAccepted', 'totalEntries']);
