@@ -1,0 +1,646 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		044E32D02F0A13D7005A1341 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E32CF2F0A13D7005A1341 /* AppDelegate.swift */; };
+		044E32D42F0A13D7005A1341 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 044E32D22F0A13D7005A1341 /* Main.html */; };
+		044E32D62F0A13D7005A1341 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 044E32D52F0A13D7005A1341 /* Icon.png */; };
+		044E32D82F0A13D7005A1341 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 044E32D72F0A13D7005A1341 /* Style.css */; };
+		044E32DA2F0A13D7005A1341 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E32D92F0A13D7005A1341 /* SceneDelegate.swift */; };
+		044E32DC2F0A13D7005A1341 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E32DB2F0A13D7005A1341 /* ViewController.swift */; };
+		044E32DF2F0A13D7005A1341 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 044E32DD2F0A13D7005A1341 /* LaunchScreen.storyboard */; };
+		044E32E22F0A13D7005A1341 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 044E32E02F0A13D7005A1341 /* Main.storyboard */; };
+		044E32EA2F0A13D8005A1341 /* NoMoreScamTW Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 044E32E92F0A13D8005A1341 /* NoMoreScamTW Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		044E32EF2F0A13D8005A1341 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E32EE2F0A13D8005A1341 /* SafariWebExtensionHandler.swift */; };
+		044E32F12F0A13D8005A1341 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 044E32E32F0A13D8005A1341 /* Assets.xcassets */; };
+		044E33082F0A13D8005A1341 /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = 044E32FC2F0A13D8005A1341 /* popup.js */; };
+		044E33092F0A13D8005A1341 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = 044E32FD2F0A13D8005A1341 /* styles.css */; };
+		044E330A2F0A13D8005A1341 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 044E32FE2F0A13D8005A1341 /* background.js */; };
+		044E330B2F0A13D8005A1341 /* popup.html in Resources */ = {isa = PBXBuildFile; fileRef = 044E32FF2F0A13D8005A1341 /* popup.html */; };
+		044E330C2F0A13D8005A1341 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 044E33002F0A13D8005A1341 /* README.md */; };
+		044E330D2F0A13D8005A1341 /* welcome.js in Resources */ = {isa = PBXBuildFile; fileRef = 044E33012F0A13D8005A1341 /* welcome.js */; };
+		044E330E2F0A13D8005A1341 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 044E33022F0A13D8005A1341 /* icons */; };
+		044E330F2F0A13D8005A1341 /* test_logic.js in Resources */ = {isa = PBXBuildFile; fileRef = 044E33032F0A13D8005A1341 /* test_logic.js */; };
+		044E33102F0A13D8005A1341 /* welcome.html in Resources */ = {isa = PBXBuildFile; fileRef = 044E33042F0A13D8005A1341 /* welcome.html */; };
+		044E33112F0A13D8005A1341 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 044E33052F0A13D8005A1341 /* manifest.json */; };
+		044E33122F0A13D8005A1341 /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = 044E33062F0A13D8005A1341 /* _locales */; };
+		044E33132F0A13D8005A1341 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 044E33072F0A13D8005A1341 /* content.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		044E32EB2F0A13D8005A1341 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 044E32C42F0A13D7005A1341 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 044E32E82F0A13D8005A1341;
+			remoteInfo = "NoMoreScamTW Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		044E32F72F0A13D8005A1341 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				044E32EA2F0A13D8005A1341 /* NoMoreScamTW Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		044E32CC2F0A13D7005A1341 /* NoMoreScamTW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoMoreScamTW.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		044E32CF2F0A13D7005A1341 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		044E32D32F0A13D7005A1341 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		044E32D52F0A13D7005A1341 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		044E32D72F0A13D7005A1341 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		044E32D92F0A13D7005A1341 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		044E32DB2F0A13D7005A1341 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		044E32DE2F0A13D7005A1341 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		044E32E12F0A13D7005A1341 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		044E32E32F0A13D8005A1341 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		044E32E42F0A13D8005A1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		044E32E92F0A13D8005A1341 /* NoMoreScamTW Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "NoMoreScamTW Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		044E32EE2F0A13D8005A1341 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		044E32F02F0A13D8005A1341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		044E32FC2F0A13D8005A1341 /* popup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = popup.js; path = Resources/popup.js; sourceTree = "<group>"; };
+		044E32FD2F0A13D8005A1341 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = styles.css; path = Resources/styles.css; sourceTree = "<group>"; };
+		044E32FE2F0A13D8005A1341 /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = Resources/background.js; sourceTree = "<group>"; };
+		044E32FF2F0A13D8005A1341 /* popup.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = popup.html; path = Resources/popup.html; sourceTree = "<group>"; };
+		044E33002F0A13D8005A1341 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = Resources/README.md; sourceTree = "<group>"; };
+		044E33012F0A13D8005A1341 /* welcome.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = welcome.js; path = Resources/welcome.js; sourceTree = "<group>"; };
+		044E33022F0A13D8005A1341 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
+		044E33032F0A13D8005A1341 /* test_logic.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = test_logic.js; path = Resources/test_logic.js; sourceTree = "<group>"; };
+		044E33042F0A13D8005A1341 /* welcome.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = welcome.html; path = Resources/welcome.html; sourceTree = "<group>"; };
+		044E33052F0A13D8005A1341 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = Resources/manifest.json; sourceTree = "<group>"; };
+		044E33062F0A13D8005A1341 /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = Resources/_locales; sourceTree = "<group>"; };
+		044E33072F0A13D8005A1341 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = Resources/content.js; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		044E32C92F0A13D7005A1341 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		044E32E62F0A13D8005A1341 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		044E32C32F0A13D7005A1341 = {
+			isa = PBXGroup;
+			children = (
+				044E32CE2F0A13D7005A1341 /* NoMoreScamTW */,
+				044E32ED2F0A13D8005A1341 /* NoMoreScamTW Extension */,
+				044E32CD2F0A13D7005A1341 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		044E32CD2F0A13D7005A1341 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				044E32CC2F0A13D7005A1341 /* NoMoreScamTW.app */,
+				044E32E92F0A13D8005A1341 /* NoMoreScamTW Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		044E32CE2F0A13D7005A1341 /* NoMoreScamTW */ = {
+			isa = PBXGroup;
+			children = (
+				044E32CF2F0A13D7005A1341 /* AppDelegate.swift */,
+				044E32D92F0A13D7005A1341 /* SceneDelegate.swift */,
+				044E32DB2F0A13D7005A1341 /* ViewController.swift */,
+				044E32DD2F0A13D7005A1341 /* LaunchScreen.storyboard */,
+				044E32E02F0A13D7005A1341 /* Main.storyboard */,
+				044E32E32F0A13D8005A1341 /* Assets.xcassets */,
+				044E32E42F0A13D8005A1341 /* Info.plist */,
+				044E32D12F0A13D7005A1341 /* Resources */,
+			);
+			path = NoMoreScamTW;
+			sourceTree = "<group>";
+		};
+		044E32D12F0A13D7005A1341 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				044E32D22F0A13D7005A1341 /* Main.html */,
+				044E32D52F0A13D7005A1341 /* Icon.png */,
+				044E32D72F0A13D7005A1341 /* Style.css */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		044E32ED2F0A13D8005A1341 /* NoMoreScamTW Extension */ = {
+			isa = PBXGroup;
+			children = (
+				044E32FB2F0A13D8005A1341 /* Resources */,
+				044E32EE2F0A13D8005A1341 /* SafariWebExtensionHandler.swift */,
+				044E32F02F0A13D8005A1341 /* Info.plist */,
+			);
+			path = "NoMoreScamTW Extension";
+			sourceTree = "<group>";
+		};
+		044E32FB2F0A13D8005A1341 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				044E32FC2F0A13D8005A1341 /* popup.js */,
+				044E32FD2F0A13D8005A1341 /* styles.css */,
+				044E32FE2F0A13D8005A1341 /* background.js */,
+				044E32FF2F0A13D8005A1341 /* popup.html */,
+				044E33002F0A13D8005A1341 /* README.md */,
+				044E33012F0A13D8005A1341 /* welcome.js */,
+				044E33022F0A13D8005A1341 /* icons */,
+				044E33032F0A13D8005A1341 /* test_logic.js */,
+				044E33042F0A13D8005A1341 /* welcome.html */,
+				044E33052F0A13D8005A1341 /* manifest.json */,
+				044E33062F0A13D8005A1341 /* _locales */,
+				044E33072F0A13D8005A1341 /* content.js */,
+			);
+			name = Resources;
+			path = "NoMoreScamTW Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		044E32CB2F0A13D7005A1341 /* NoMoreScamTW */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 044E32F82F0A13D8005A1341 /* Build configuration list for PBXNativeTarget "NoMoreScamTW" */;
+			buildPhases = (
+				044E32C82F0A13D7005A1341 /* Sources */,
+				044E32C92F0A13D7005A1341 /* Frameworks */,
+				044E32CA2F0A13D7005A1341 /* Resources */,
+				044E32F72F0A13D8005A1341 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				044E32EC2F0A13D8005A1341 /* PBXTargetDependency */,
+			);
+			name = NoMoreScamTW;
+			packageProductDependencies = (
+			);
+			productName = NoMoreScamTW;
+			productReference = 044E32CC2F0A13D7005A1341 /* NoMoreScamTW.app */;
+			productType = "com.apple.product-type.application";
+		};
+		044E32E82F0A13D8005A1341 /* NoMoreScamTW Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 044E32F42F0A13D8005A1341 /* Build configuration list for PBXNativeTarget "NoMoreScamTW Extension" */;
+			buildPhases = (
+				044E32E52F0A13D8005A1341 /* Sources */,
+				044E32E62F0A13D8005A1341 /* Frameworks */,
+				044E32E72F0A13D8005A1341 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "NoMoreScamTW Extension";
+			packageProductDependencies = (
+			);
+			productName = "NoMoreScamTW Extension";
+			productReference = 044E32E92F0A13D8005A1341 /* NoMoreScamTW Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		044E32C42F0A13D7005A1341 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					044E32CB2F0A13D7005A1341 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					044E32E82F0A13D8005A1341 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+				};
+			};
+			buildConfigurationList = 044E32C72F0A13D7005A1341 /* Build configuration list for PBXProject "NoMoreScamTW" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 044E32C32F0A13D7005A1341;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 044E32CD2F0A13D7005A1341 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				044E32CB2F0A13D7005A1341 /* NoMoreScamTW */,
+				044E32E82F0A13D8005A1341 /* NoMoreScamTW Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		044E32CA2F0A13D7005A1341 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				044E32D62F0A13D7005A1341 /* Icon.png in Resources */,
+				044E32E22F0A13D7005A1341 /* Main.storyboard in Resources */,
+				044E32DF2F0A13D7005A1341 /* LaunchScreen.storyboard in Resources */,
+				044E32D42F0A13D7005A1341 /* Main.html in Resources */,
+				044E32F12F0A13D8005A1341 /* Assets.xcassets in Resources */,
+				044E32D82F0A13D7005A1341 /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		044E32E72F0A13D8005A1341 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				044E33132F0A13D8005A1341 /* content.js in Resources */,
+				044E33082F0A13D8005A1341 /* popup.js in Resources */,
+				044E330D2F0A13D8005A1341 /* welcome.js in Resources */,
+				044E33112F0A13D8005A1341 /* manifest.json in Resources */,
+				044E330B2F0A13D8005A1341 /* popup.html in Resources */,
+				044E330C2F0A13D8005A1341 /* README.md in Resources */,
+				044E330A2F0A13D8005A1341 /* background.js in Resources */,
+				044E330F2F0A13D8005A1341 /* test_logic.js in Resources */,
+				044E33102F0A13D8005A1341 /* welcome.html in Resources */,
+				044E330E2F0A13D8005A1341 /* icons in Resources */,
+				044E33122F0A13D8005A1341 /* _locales in Resources */,
+				044E33092F0A13D8005A1341 /* styles.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		044E32C82F0A13D7005A1341 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				044E32DC2F0A13D7005A1341 /* ViewController.swift in Sources */,
+				044E32D02F0A13D7005A1341 /* AppDelegate.swift in Sources */,
+				044E32DA2F0A13D7005A1341 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		044E32E52F0A13D8005A1341 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				044E32EF2F0A13D8005A1341 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		044E32EC2F0A13D8005A1341 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 044E32E82F0A13D8005A1341 /* NoMoreScamTW Extension */;
+			targetProxy = 044E32EB2F0A13D8005A1341 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		044E32D22F0A13D7005A1341 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				044E32D32F0A13D7005A1341 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		044E32DD2F0A13D7005A1341 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				044E32DE2F0A13D7005A1341 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		044E32E02F0A13D7005A1341 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				044E32E12F0A13D7005A1341 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		044E32F22F0A13D8005A1341 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		044E32F32F0A13D8005A1341 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		044E32F52F0A13D8005A1341 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "NoMoreScamTW Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "NoMoreScamTW Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwu.nomorescamtw.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		044E32F62F0A13D8005A1341 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "NoMoreScamTW Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "NoMoreScamTW Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwu.nomorescamtw.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		044E32F92F0A13D8005A1341 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoMoreScamTW/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NoMoreScamTW;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwu.nomorescamtw;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		044E32FA2F0A13D8005A1341 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoMoreScamTW/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NoMoreScamTW;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackwu.nomorescamtw;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		044E32C72F0A13D7005A1341 /* Build configuration list for PBXProject "NoMoreScamTW" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				044E32F22F0A13D8005A1341 /* Debug */,
+				044E32F32F0A13D8005A1341 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		044E32F42F0A13D8005A1341 /* Build configuration list for PBXNativeTarget "NoMoreScamTW Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				044E32F52F0A13D8005A1341 /* Debug */,
+				044E32F62F0A13D8005A1341 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		044E32F82F0A13D8005A1341 /* Build configuration list for PBXNativeTarget "NoMoreScamTW" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				044E32F92F0A13D8005A1341 /* Debug */,
+				044E32FA2F0A13D8005A1341 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 044E32C42F0A13D7005A1341 /* Project object */;
+}

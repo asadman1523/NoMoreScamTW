@@ -1,0 +1,28 @@
+{
+    "appName": {
+        "message": "麥騙",
+        "description": "The name of the extension"
+    },
+    "appDesc": {
+        "message": "瀏覽到政府公告之詐騙網站時自動跳出警示。",
+        "description": "The description of the extension"
+    },
+    "settingsTitle": {
+        "message": "設定"
+    },
+    "showLeaveBtnLabel": {
+        "message": "顯示「立即離開」按鈕"
+    },
+    "databaseStatus": {
+        "message": "資料庫狀態：正常"
+    },
+    "lastUpdatedLabel": {
+        "message": "最後更新："
+    },
+    "nextUpdateLabel": {
+        "message": "下次更新："
+    },
+    "totalRecordsLabel": {
+        "message": "資料總數："
+    }
+}
