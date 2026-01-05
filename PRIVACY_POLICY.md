@@ -1,6 +1,6 @@
 # 隱私權政策 (Privacy Policy)
 
-**生效日期：2024 年 1 月 1 日**
+**生效日期：2026 年 1 月 1 日**
 
 **NoMoreScamTW (麥騙)** (以下簡稱「本應用程式」) 由開發者 **Jack Wu** 獨立開發。我們非常重視您的隱私權，本政策旨在說明我們如何處理您的資料，特別是關於 Android 無障礙服務 (Accessibility Service) 的使用。
 
@@ -48,9 +48,9 @@
 
 ---
 
-# Privacy Policy (English Version)
+# Privacy Policy
 
-**Effective Date: January 1, 2024**
+**Effective Date: January 1, 2026**
 
 **NoMoreScamTW** (hereinafter referred to as "this App") is independently developed by **Jack Wu**. We value your privacy. This policy explains how we handle your data, specifically regarding the use of the Android Accessibility Service.
 
