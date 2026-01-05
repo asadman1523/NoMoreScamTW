@@ -72,6 +72,9 @@ class PermissionAccessibilityActivity : AppCompatActivity() {
         }
         val dialog = builder.create()
         dialog.show()
+        // Set button colors for better visibility in dark mode
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(getColor(R.color.dialog_button))
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(getColor(R.color.dialog_button))
     }
 
     private fun playAnimation() {

@@ -5,4 +5,5 @@
     <color name="primary_blue">#2673B7</color> <!-- RGB: 38, 115, 183 -->
     <color name="primary_blue_dark">#1D5A8F</color> <!-- Darker variant for status bar -->
     <color name="tutorial_desc">#EFEEEE</color>
+    <color name="dialog_button">#64B5F6</color> <!-- Lighter blue for dark mode -->
 </resources>
