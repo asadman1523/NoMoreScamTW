@@ -45,3 +45,53 @@
 *   **開發者**：Jack Wu
 *   **Email**: dm3352andy@gmail.com
 *   **GitHub Issue**: https://github.com/asadman1523/NoMoreScamTW/issues
+
+---
+
+# Privacy Policy (English Version)
+
+**Effective Date: January 1, 2024**
+
+**NoMoreScamTW** (hereinafter referred to as "this App") is independently developed by **Jack Wu**. We value your privacy. This policy explains how we handle your data, specifically regarding the use of the Android Accessibility Service.
+
+## 1. Non-Affiliation & Data Source
+
+*   **Non-Affiliation Disclaimer**: This App is an independent tool and does **NOT** represent any government entity.
+*   **Data Source**: The scam website list used by this App is sourced from the Taiwan Government Open Data Platform (https://data.gov.tw/dataset/160123). It is used solely to help users identify potential risks.
+
+## 2. Accessibility Service API Disclosure (Android)
+
+The Android version of this App requires the use of the **AccessibilityService API**. We hereby provide a prominent disclosure and privacy commitment:
+
+*   **Purpose of Use**: This permission is used **SOLELY to read the URL in the browser address bar**. This allows the App to check the current URL against the local scam database in real-time to provide fraud protection alerts.
+*   **Data Handling**:
+    *   **Local Processing Only**: All URL checks are performed entirely locally on your device.
+    *   **No Sensitive Data Collection**: We **NEVER** use this API to read, collect, store, or transmit your passwords, credit card numbers, bank accounts, or any other private sensitive information.
+    *   **No Uploads**: Your browsing history and URL information are **NEVER** uploaded to any external server for analysis or storage.
+
+## 3. Data Collection and Use
+
+This App (including iOS, Android, and Chrome Extension versions) does **NOT** collect, store, or transmit any of your personal data to the developer's servers.
+
+*   **URL Checking**: All checking processes are conducted locally on your device.
+*   **Database Updates**: The App periodically connects to public data sources (e.g., GitHub CDN or Government Open Data Platform) solely to download the latest scam list. This process does not involve uploading user data.
+
+## 4. Permissions
+
+To provide protection features, we require the following permissions:
+
+*   **Android - Display over other apps (Overlay)**: Used to immediately display a full-screen red warning window when a scam website is detected.
+*   **Android - Accessibility Service**: Used to detect the current browsing URL (as detailed in Section 2).
+*   **Chrome Extension - Tabs/WebNavigation**: Used to detect the URL status of browser tabs.
+
+## 5. Third-Party Services
+
+This App does not integrate any third-party services for tracking user behavior or delivering advertisements (e.g., Google Analytics, Firebase Analytics). We are committed to providing a clean, tracking-free user experience.
+
+## 6. Contact Us
+
+If you have any questions about this Privacy Policy, please contact the developer:
+
+*   **Developer**: Jack Wu
+*   **Email**: dm3352andy@gmail.com
+*   **GitHub Issue**: https://github.com/asadman1523/NoMoreScamTW/issues
