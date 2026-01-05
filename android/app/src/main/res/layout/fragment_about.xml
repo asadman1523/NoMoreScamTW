@@ -99,6 +99,26 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDataSource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/data_source_label"
+                android:textColor="@color/primary_blue"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="本應用程式為非官方開發，資料串接政府資料開放平臺，開發者與政府機關無隸屬關係。"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <Button

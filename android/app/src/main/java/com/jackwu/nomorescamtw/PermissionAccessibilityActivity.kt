@@ -47,8 +47,7 @@ class PermissionAccessibilityActivity : AppCompatActivity() {
         playAnimation()
 
         btnGrant.setOnClickListener {
-            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            startActivity(intent)
+            showAccessibilityDisclosure()
         }
 
         btnNext.setOnClickListener {
@@ -56,6 +55,23 @@ class PermissionAccessibilityActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             finish()
         }
+    }
+
+    private fun showAccessibilityDisclosure() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.accessibility_disclosure_title))
+        builder.setMessage(getString(R.string.accessibility_disclosure_message))
+        builder.setCancelable(false) // Required by policy: cannot be dismissed by touching outside
+        builder.setPositiveButton(getString(R.string.btn_agree)) { dialog, _ ->
+            dialog.dismiss()
+            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            startActivity(intent)
+        }
+        builder.setNegativeButton(getString(R.string.btn_deny)) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun playAnimation() {

@@ -39,6 +39,11 @@ class AboutFragment : Fragment() {
             startActivity(intent)
         }
 
+        view.findViewById<TextView>(R.id.tvDataSource).setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.data_source_url)))
+            startActivity(intent)
+        }
+
         btnCloseAbout.setOnClickListener {
             parentFragmentManager.popBackStack()
         }

@@ -19,7 +19,7 @@
     <!-- Permission Activity -->
     <string name="perm_title">Required Permissions</string>
     <string name="perm_overlay_title">Display Over Other Apps</string>
-    <string name="perm_overlay_desc">Required to show the red warning banner immediately when a scam website is detected.</string>
+    <string name="perm_overlay_desc">Required to show the warning banner immediately when a scam website is detected.</string>
     <string name="perm_access_title">Accessibility Service</string>
     <string name="perm_access_desc">Required to detect the URL you are visiting in your browser to compare it against the scam database.</string>
     <string name="btn_grant">Grant</string>
@@ -33,8 +33,13 @@
 
     <!-- Disclaimer Activity -->
     <string name="disclaimer_title">Disclaimer</string>
-    <string name="disclaimer_content">This application uses public data from the government to help identify potential scam websites.\n\nHowever, the developer does not guarantee 100% accuracy. Please always remain vigilant.\n\nBy clicking "Accept", you agree to the terms of use.</string>
+    <string name="disclaimer_content">This application (NoMoreScamTW) uses public data from the government to help identify potential scam websites.\n\n**IMPORTANT: This is an independent application and does NOT represent any government entity. Data source: National Development Council Data.gov.tw (https://data.gov.tw).**\n\nThe developer does not guarantee 100% accuracy. Please remain vigilant.\n\nBy clicking "Accept", you agree to the terms of use.</string>
     <string name="btn_accept">Accept &amp; Continue</string>
+
+    <string name="accessibility_disclosure_title">Accessibility Service Disclosure</string>
+    <string name="accessibility_disclosure_message">NoMoreScamTW requires the "Accessibility Service" permission to perform its core functions:\n\n1. Read Browser URL: When you are browsing, the app reads the URL in the address bar.\n2. Security Comparison: The captured URL is immediately compared with the local scam database to protect you from fraudulent sites.\n\nYour Privacy Matters:\n- This app NEVER collects, stores, or transmits your passwords, credit card numbers, or any sensitive personal data.\n- Browsed URLs are only processed locally for comparison and are NOT uploaded for analysis.\n\nYou must tap "Agree" below and then enable the service in your system settings to activate real-time protection.</string>
+    <string name="btn_agree">Agree</string>
+    <string name="btn_deny">Deny (Protection will be disabled)</string>
 
     <!-- Permission Flow -->
     <string name="perm_overlay_header">Step 1: Overlay Permission</string>
@@ -61,4 +66,6 @@
     <string name="btn_close">Close</string>
     <string name="link_contact_author">Contact Author / About</string>
     <string name="btn_debug_skip">Debug: Skip Permissions</string>
+    <string name="data_source_label">Data Source: data.gov.tw (Public Data)</string>
+    <string name="data_source_url">https://data.gov.tw/dataset/160123</string>
 </resources>

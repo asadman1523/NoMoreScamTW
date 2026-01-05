@@ -4,5 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary_blue">#2673B7</color> <!-- RGB: 38, 115, 183 -->
     <color name="primary_blue_dark">#1D5A8F</color> <!-- Darker variant for status bar -->
-    <color name="tutorial_desc">#666666</color>
+    <color name="tutorial_desc">#EFEEEE</color>
 </resources>

@@ -74,6 +74,11 @@ class MainActivity : AppCompatActivity() {
             
             findViewById<TextView>(R.id.tvContactAuthor).setOnClickListener { showAboutPage() }
 
+            findViewById<TextView>(R.id.tvMainDataSource).setOnClickListener {
+                val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(getString(R.string.data_source_url)))
+                startActivity(intent)
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
