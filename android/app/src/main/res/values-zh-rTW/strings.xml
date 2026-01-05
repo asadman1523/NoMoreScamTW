@@ -36,7 +36,7 @@
     <string name="disclaimer_content">本應用程式 (麥騙) 使用政府公開資料來協助識別潛在的詐騙網站。\n\n**重要聲明：本程式為非官方獨立開發，不代表任何政府機關。資料來源：政府資料開放平臺 (https://data.gov.tw)。**\n\n開發者不保證資料的 100% 正確性或完整性。請使用者隨時保持警覺。\n\n點擊「同意並繼續」即代表您同意使用條款及其內容。</string>
     <string name="btn_accept">同意並繼續</string>
 
-    <string name="accessibility_disclosure_title">無障礙服務使用說明 (醒目揭露)</string>
+    <string name="accessibility_disclosure_title">無障礙服務使用說明</string>
     <string name="accessibility_disclosure_message">「麥騙」應用程式需要使用「無障礙服務」(Accessibility Service) 權限來執行以下核心功能：\n\n1. 讀取瀏覽器網址：當您在瀏覽網頁時，程式需要獲取網址列中的 URL。\n2. 比對與防護：獲取的網址會立即與本地詐騙資料庫進行比對，若偵測到危險網站將立即顯示紅色的詐騙警示。\n\n我們重視您的隱私：\n- 本程式絕不會收集、儲存或傳輸您的密碼、信用卡號或敏感個資。\n- 獲取的網址僅於應用程式內本地進行比對，不會上傳伺服器進行分析。\n\n您必須點擊下方「同意」並前往系統設定開啟服務，「麥騙」才能啟動即時防護功能。</string>
     <string name="btn_agree">同意</string>
     <string name="btn_deny">拒絕 (將無法開啟自動防護)</string>

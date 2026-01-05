@@ -33,7 +33,7 @@
 
     <!-- Disclaimer Activity -->
     <string name="disclaimer_title">Disclaimer</string>
-    <string name="disclaimer_content">This application (NoMoreScamTW) uses public data from the government to help identify potential scam websites.\n\n**IMPORTANT: This is an independent application and does NOT represent any government entity. Data source: National Development Council Data.gov.tw (https://data.gov.tw).**\n\nThe developer does not guarantee 100% accuracy. Please remain vigilant.\n\nBy clicking "Accept", you agree to the terms of use.</string>
+    <string name="disclaimer_content">This application (NoMoreScamTW) uses public data from the government to help identify potential scam websites.\n\n**IMPORTANT: This is an independent application and does NOT represent any government entity. Data source: Government Open Data Platform Data.gov.tw (https://data.gov.tw).**\n\nThe developer does not guarantee 100% accuracy. Please remain vigilant.\n\nBy clicking "Accept", you agree to the terms of use.</string>
     <string name="btn_accept">Accept &amp; Continue</string>
 
     <string name="accessibility_disclosure_title">Accessibility Service Disclosure</string>
