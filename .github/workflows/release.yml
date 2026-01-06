@@ -38,9 +38,9 @@ jobs:
       - name: Build Android APK
         run: |
           cd android
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
           # Find and move APK to root
-          find app/build/outputs/apk/debug -name "*.apk" -exec cp {} ../NoMoreScamTW_Android.apk \;
+          find app/build/outputs/apk/release -name "*.apk" -exec cp {} ../NoMoreScamTW_Android.apk \;
           cd ..
 
       # --- Release ---
