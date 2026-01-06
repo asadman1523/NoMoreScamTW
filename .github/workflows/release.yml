@@ -44,9 +44,11 @@ jobs:
         run: |
           echo "$APP_KEY" | base64 --decode > android/app/keystore.jks
           cd android
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease bundleRelease
           # Find and move APK to root
           find app/build/outputs/apk/release -name "*.apk" -exec cp {} ../NoMoreScamTW_Android.apk \;
+          # Find and move AAB to root
+          find app/build/outputs/bundle/release -name "*.aab" -exec cp {} ../NoMoreScamTW_Android.aab \;
           cd ..
 
       # --- Release ---
@@ -56,4 +58,5 @@ jobs:
           files: |
             NoMoreScamTW_Extension.zip
             NoMoreScamTW_Android.apk
+            NoMoreScamTW_Android.aab
           generate_release_notes: true
