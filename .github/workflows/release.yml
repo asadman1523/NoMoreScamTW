@@ -36,7 +36,13 @@ jobs:
         run: chmod +x android/gradlew
 
       - name: Build Android APK
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          APP_ALIAS: ${{ secrets.APP_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
+          echo "$APP_KEY" | base64 --decode > android/app/keystore.jks
           cd android
           ./gradlew assembleRelease
           # Find and move APK to root
