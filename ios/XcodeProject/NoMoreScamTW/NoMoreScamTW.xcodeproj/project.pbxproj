@@ -473,6 +473,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8ARP6V25Z8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "NoMoreScamTW Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "NoMoreScamTW Extension";
@@ -505,6 +506,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8ARP6V25Z8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "NoMoreScamTW Extension/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "NoMoreScamTW Extension";
@@ -539,9 +541,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8ARP6V25Z8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NoMoreScamTW/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NoMoreScamTW;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -578,9 +582,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8ARP6V25Z8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NoMoreScamTW/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NoMoreScamTW;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

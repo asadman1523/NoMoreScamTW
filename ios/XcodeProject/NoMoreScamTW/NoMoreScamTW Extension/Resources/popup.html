@@ -3,15 +3,29 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=375, initial-scale=1.0">
   <style>
+    html,
     body {
-      width: 100%;
-      min-width: 320px;
-      padding: 20px;
+      width: 375px !important;
+      min-width: 375px !important;
+      max-width: 375px !important;
+      min-height: 320px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+    }
+
+    body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      box-sizing: border-box;
       font-size: 16px;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     h1 {
@@ -63,37 +77,39 @@
 </head>
 
 <body>
-  <h1>
-    <img src="icons/icon48.png" width="32" height="32" style="border-radius: 6px;">
-    <span id="appName">NoMoreScamTW</span>
-    <span id="version" style="font-size: 14px; color: #999; margin-left: 8px; font-weight: normal;"></span>
-  </h1>
+  <div class="container">
+    <h1>
+      <img src="icons/icon48.png" width="32" height="32" style="border-radius: 6px;">
+      <span id="appName">NoMoreScamTW</span>
+      <span id="version" style="font-size: 14px; color: #999; margin-left: 8px; font-weight: normal;"></span>
+    </h1>
 
-  <div class="status" id="status">
-    <!-- Status content injected by JS -->
-    Loading...
-  </div>
-
-  <button id="updateBtn" disabled>Update Database</button>
-
-  <div class="footer"
-    style="display: flex; flex-direction: row; gap: 15px; justify-content: flex-end; align-items: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; height: auto;">
-    <div style="font-size: 14px; color: #555; margin-right: auto;">支持作者:</div>
-
-    <div id="opayBtn" style="cursor: pointer; display: flex; align-items: center;">
-      <img src="icons/opay.png" alt="歐付寶" style="height: 28px; width: auto;">
+    <div class="status" id="status">
+      <!-- Status content injected by JS -->
+      Loading...
     </div>
 
-    <div id="paypalBtn" style="cursor: pointer; display: flex; align-items: center;">
-      <img src="icons/paypal.png" alt="PayPal" style="height: 28px; width: auto;">
-    </div>
+    <button id="updateBtn" disabled>Update Database</button>
 
-    <a href="#" id="githubLink"
-      style="color: #666; text-decoration: none; display: flex; align-items: center; gap: 4px;">
-      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="28" height="28"
-        style="opacity: 0.8;">
-      <span style="font-size: 14px; font-weight: 500;">Github</span>
-    </a>
+    <div class="footer"
+      style="display: flex; flex-direction: row; gap: 15px; justify-content: flex-end; align-items: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; height: auto;">
+      <div style="font-size: 14px; color: #555; margin-right: auto;">支持作者:</div>
+
+      <div id="opayBtn" style="cursor: pointer; display: flex; align-items: center;">
+        <img src="icons/opay.png" alt="歐付寶" style="height: 28px; width: auto;">
+      </div>
+
+      <div id="paypalBtn" style="cursor: pointer; display: flex; align-items: center;">
+        <img src="icons/paypal.png" alt="PayPal" style="height: 28px; width: auto;">
+      </div>
+
+      <a href="#" id="githubLink"
+        style="color: #666; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="28" height="28"
+          style="opacity: 0.8;">
+        <span style="font-size: 14px; font-weight: 500;">Github</span>
+      </a>
+    </div>
   </div>
 
   <script src="popup.js"></script>
