@@ -9,6 +9,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import java.net.URL
 import java.util.concurrent.TimeUnit
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class FraudRepository(
     private val fraudDao: FraudDao,
@@ -17,96 +19,190 @@ class FraudRepository(
 
     suspend fun updateDatabase(): Result<Int> = withContext(Dispatchers.IO) {
         try {
+            val entities = mutableListOf<FraudSite>()
+            val visitedDomains = mutableSetOf<String>()
             
-            var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/160055" 
-
+            // 1. Fetch Config Once
+            var configMap: Map<*, *>? = null
             try {
                 val configUrl = "https://cdn.jsdelivr.net/gh/asadman1523/NoMoreScamTW@main/server_config.json"
-                val configJson = URL(configUrl).readText()
-                val regex = "\"fraud_api_url\"\\s*:\\s*\"([^\"]+)\"".toRegex()
-                val matchResult = regex.find(configJson)
-                val remoteApiUrl = matchResult?.groupValues?.get(1)
+                val client = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).build()
+                val request = okhttp3.Request.Builder().url(configUrl).build()
+                val response = client.newCall(request).execute()
+                val configJson = response.body()?.string()
                 
-                if (remoteApiUrl != null) {
-                    targetDatasetUrl = remoteApiUrl
+                if (configJson != null) {
+                    val gson = Gson()
+                    configMap = gson.fromJson(configJson, Map::class.java) as Map<*, *>
                 }
             } catch (e: Exception) {
-                Log.w("FraudRepository", "Config fetch failed, using default Gov URL", e)
+                Log.w("FraudRepository", "Config fetch failed, using defaults", e)
             }
 
-            Log.i("FraudRepository", "Fetching metadata from: $targetDatasetUrl")
-
-            val client = OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .build()
-                
-            val request = okhttp3.Request.Builder().url(targetDatasetUrl).build()
-            val response = client.newCall(request).execute()
-            val jsonStr = response.body()?.string()
-
-            if (!response.isSuccessful || jsonStr == null) {
-                throw Exception("Gov API fetch failed: ${response.code()}")
+            // --- Source 1: Dataset 160055 (CSV) ---
+            try {
+                fetchDataset160055(entities, visitedDomains, configMap)
+            } catch (e: Exception) {
+                Log.e("FraudRepository", "Failed to fetch dataset 160055", e)
             }
 
-            val urlRegex = "\"resourceDownloadUrl\"\\s*:\\s*\"([^\"]+)\"".toRegex()
-
-            val fileMatch = urlRegex.find(jsonStr)
-            val downloadUrl = fileMatch?.groupValues?.get(1)?.replace("\\/", "/") // Unescape slashes
-            
-            if (downloadUrl.isNullOrEmpty()) {
-                throw Exception("No download link found in Gov API response")
-            }
-
-            Log.i("FraudRepository", "Downloading CSV from: $downloadUrl")
-
-            // 2. Download CSV Content
-            val csvContent = apiService.downloadDatabase(downloadUrl)
-            
-            // 3. Parse CSV
-            val lines = csvContent.lines()
-            val entities = mutableListOf<FraudSite>()
-
-            for (i in 2 until lines.size) {
-                val line = lines[i].trim()
-                if (line.isEmpty()) continue
-
-                // Regex to split by comma, ignoring commas inside quotes
-                val parts = line.split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)".toRegex())
-
-                if (parts.size >= 2) {
-                    val cleanParts = parts.map { it.trim().removeSurrounding("\"") }
-
-                    val name = cleanParts[0]
-                    val rawUrl = cleanParts[1]
-                    val count = cleanParts.getOrNull(2)?.toIntOrNull() ?: 0
-                    val startDate = cleanParts.getOrNull(3) ?: ""
-                    val endDate = cleanParts.getOrNull(4) ?: ""
-
-                    if (rawUrl.isEmpty()) continue
-
-                    // Normalize URL
-                    var url = rawUrl.replace(Regex("^https?://"), "")
-                    url = url.replace(Regex("/$"), "")
-
-                    if (url.isNotEmpty()) {
-                        entities.add(FraudSite(url, name, count, startDate, endDate))
-                    }
-                }
+            // --- Source 2: Dataset 165027 (JSON) ---
+            try {
+                fetchDataset165027(entities, visitedDomains, configMap)
+            } catch (e: Exception) {
+                Log.e("FraudRepository", "Failed to fetch dataset 165027", e)
             }
 
             if (entities.isNotEmpty()) {
                 fraudDao.deleteAll()
                 fraudDao.insertAll(entities)
-                // Returning total rows processed (including duplicates) as requested by user
-                Result.success(lines.size - 2) 
+                Result.success(entities.size)
             } else {
-                Result.failure(Exception("No data parsed"))
+                Result.failure(Exception("No data parsed from any source"))
             }
 
         } catch (e: Exception) {
             Log.e("FraudRepository", "Error updating database", e)
             Result.failure(e)
+        }
+    }
+
+    private suspend fun fetchDataset160055(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?) {
+        var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/160055"
+        
+        // Try to override with server config
+        try {
+            val datasets = configMap?.get("datasets") as? List<Map<*, *>>
+            datasets?.forEach { dataset ->
+                if (dataset["id"] == "160055") {
+                    val url = dataset["url"] as? String
+                    if (!url.isNullOrEmpty()) {
+                        targetDatasetUrl = url
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.w("FraudRepository", "Config parse failed 160055", e)
+        }
+
+        Log.i("FraudRepository", "Fetching metadata 160055: $targetDatasetUrl")
+        val downloadUrl = fetchDownloadUrlFromMetadata(targetDatasetUrl) ?: run {
+            Log.e("FraudRepository", "No download URL for 160055")
+            return
+        }
+
+        Log.i("FraudRepository", "Downloading CSV 160055: $downloadUrl")
+        val csvContent = apiService.downloadDatabase(downloadUrl)
+        
+        val lines = csvContent.lines()
+        for (i in 2 until lines.size) {
+            val line = lines[i].trim()
+            if (line.isEmpty()) continue
+            val parts = line.split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)".toRegex())
+            if (parts.size >= 2) {
+                val cleanParts = parts.map { it.trim().removeSurrounding("\"") }
+                val rawUrl = cleanParts[1]
+                if (rawUrl.isEmpty()) continue
+                
+                var url = rawUrl.replace(Regex("^https?://"), "").replace(Regex("/$"), "")
+                if (url.isNotEmpty() && !visitedDomains.contains(url)) {
+                    val name = cleanParts[0]
+                    val count = cleanParts.getOrNull(2)?.toIntOrNull() ?: 0
+                    val startDate = cleanParts.getOrNull(3) ?: ""
+                    val endDate = cleanParts.getOrNull(4) ?: ""
+                    
+                    entities.add(FraudSite(url, name, count, startDate, endDate))
+                    visitedDomains.add(url)
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchDataset165027(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?) {
+        var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/165027"
+        
+        // Try to override with server config
+        try {
+             val datasets = configMap?.get("datasets") as? List<Map<*, *>>
+             datasets?.forEach { dataset ->
+                 if (dataset["id"] == "165027") {
+                     val url = dataset["url"] as? String
+                     if (!url.isNullOrEmpty()) {
+                         targetDatasetUrl = url
+                     }
+                 }
+             }
+        } catch (e: Exception) {
+            Log.w("FraudRepository", "Config parse failed 165027", e)
+        }
+
+        Log.i("FraudRepository", "Fetching metadata 165027: $targetDatasetUrl")
+
+        val downloadUrl = fetchDownloadUrlFromMetadata(targetDatasetUrl, "JSON") ?: run {
+            Log.e("FraudRepository", "No download URL for 165027")
+            return
+        }
+        
+        Log.i("FraudRepository", "Downloading JSON 165027: $downloadUrl")
+        val jsonContent = apiService.downloadDatabase(downloadUrl)
+
+        val gson = Gson()
+        val listType = object : TypeToken<List<Map<String, String>>>() {}.type
+        val rawList: List<Map<String, String>> = gson.fromJson(jsonContent, listType)
+
+        for (item in rawList) {
+            val domain = item["網域名稱"] ?: ""
+            if (domain.isNotEmpty() && !visitedDomains.contains(domain)) {
+                // Dataset 165027 fields are different, we adapt them to match FraudSite
+                val name = "TWNIC Suspicious Domain" // No specific name field in sample, maybe use '一頁式詐騙購物網站' as description?
+                // The sample showed "一頁式詐騙購物網站": "連至PChome..." which is a description.
+                
+                entities.add(FraudSite(domain, name, 0, item["詐騙網站創建日期"] ?: "", ""))
+                visitedDomains.add(domain)
+            }
+        }
+    }
+
+    private fun fetchDownloadUrlFromMetadata(metadataUrl: String, format: String = ""): String? {
+        try {
+            val client = OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).build()
+            val request = okhttp3.Request.Builder().url(metadataUrl).build()
+            val response = client.newCall(request).execute()
+            val jsonStr = response.body()?.string() ?: return null
+            if (!response.isSuccessful) return null
+
+            // Simple regex to find resourceDownloadUrl. 
+            // If format is specified, we might want to be more specific, but for now simplistic approach:
+            // The 165027 has both XML and JSON. We want JSON.
+            // The previous regex just took the first one.
+            
+            if (format == "JSON") {
+                // Look for JSON format then the url
+                // This is a bit hacky with regex on full json. 
+                // Better to iterate over "distribution" array if we parsed it properly.
+                // But let's try a regex that looks for "resourceFormat":"JSON" and capturing the URL in the same block?
+                // Or just use Gson since we added it.
+                val gson = Gson()
+                val map = gson.fromJson(jsonStr, Map::class.java) as Map<*, *>
+                val result = map["result"] as? Map<*, *>
+                val distributions = result?.get("distribution") as? List<Map<*, *>>
+                
+                if (distributions != null) {
+                    for (dist in distributions) {
+                         if (dist["resourceFormat"] == "JSON") {
+                             return (dist["resourceDownloadUrl"] as? String)?.replace("\\/", "/")
+                         }
+                    }
+                }
+            }
+
+            // Fallback or default behavior (first link)
+            val urlRegex = "\"resourceDownloadUrl\"\\s*:\\s*\"([^\"]+)\"".toRegex()
+            return urlRegex.find(jsonStr)?.groupValues?.get(1)?.replace("\\/", "/")
+            
+        } catch (e: Exception) {
+            Log.e("FraudRepository", "Metadata fetch error", e)
+            return null
         }
     }
 

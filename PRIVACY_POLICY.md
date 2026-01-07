@@ -7,7 +7,7 @@
 ## 1. 非官方聲明與資料來源 (Non-Affiliation & Data Source)
 
 *   **非官方聲明**：本應用程式為獨立開發之工具軟體，**不代表任何政府機關**。
-*   **資料來源**：本應用程式使用的詐騙網站清單，來源為台灣政府資料開放平臺 (https://data.gov.tw/dataset/160123)，僅用於協助使用者識別潛在風險。
+*   **資料來源**：本應用程式使用的詐騙網站清單，來源為台灣政府資料開放平臺 (https://data.gov.tw/dataset/160055 及 https://data.gov.tw/dataset/165027)，僅用於協助使用者識別潛在風險。
 
 ## 2. Android 無障礙服務使用聲明 (Accessibility Service API Disclosure)
 
@@ -57,7 +57,7 @@
 ## 1. Non-Affiliation & Data Source
 
 *   **Non-Affiliation Disclaimer**: This App is an independent tool and does **NOT** represent any government entity.
-*   **Data Source**: The scam website list used by this App is sourced from the Taiwan Government Open Data Platform (https://data.gov.tw/dataset/160123). It is used solely to help users identify potential risks.
+*   **Data Source**: The scam website list used by this App is sourced from the Taiwan Government Open Data Platform (https://data.gov.tw/dataset/160055 and https://data.gov.tw/dataset/165027). It is used solely to help users identify potential risks.
 
 ## 2. Accessibility Service API Disclosure (Android)
 

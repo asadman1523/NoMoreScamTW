@@ -52,25 +52,26 @@ async function getFromIndexedDB(url) {
     });
 }
 
-// 擷取並更新詐騙資料庫
-async function updateDatabase() {
+const CONFIG_URL = 'https://cdn.jsdelivr.net/gh/asadman1523/NoMoreScamTW@main/server_config.json';
+
+async function fetchDataset160055(config) {
+    const data = {};
     try {
-        console.log('Fetching remote config...');
+        console.log('Fetching remote config for 160055...');
         let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/160055'; // Default
 
-        try {
-            const configResponse = await fetch(CONFIG_URL);
-            if (configResponse.ok) {
-                const config = await configResponse.json();
-                if (config.fraud_api_url) {
-                    govApiUrl = config.fraud_api_url;
+        if (config) {
+            if (config.datasets && Array.isArray(config.datasets)) {
+                const ds = config.datasets.find(d => d.id === '160055');
+                if (ds && ds.url) {
+                    govApiUrl = ds.url;
                 }
+            } else if (config.fraud_api_url) {
+                govApiUrl = config.fraud_api_url;
             }
-        } catch (configError) {
-            console.warn('Failed to fetch config, using default Gov API URL:', configError);
         }
 
-        console.log(`Fetching metadata from Gov API: ${govApiUrl}`);
+        console.log(`Fetching metadata from Gov API 160055: ${govApiUrl}`);
         const govResponse = await fetch(govApiUrl);
         if (!govResponse.ok) throw new Error('Gov API fetch failed');
 
@@ -79,7 +80,7 @@ async function updateDatabase() {
 
         if (!downloadUrl) throw new Error('Could not find download URL in Gov API JSON');
 
-        console.log(`Downloading CSV from: ${downloadUrl}`);
+        console.log(`Downloading CSV 160055 from: ${downloadUrl}`);
         const response = await fetch(downloadUrl);
         if (!response.ok) throw new Error('CSV download failed');
 
@@ -87,9 +88,6 @@ async function updateDatabase() {
         const lines = text.split(/\r?\n/);
 
         // CSV Header: WEBSITE_NM,WEBURL,CNT,STA_SDATE,STA_EDATE
-        const data = {};
-
-        // 從索引 2 開始 (跳過標頭)
         for (let i = 2; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
@@ -98,9 +96,7 @@ async function updateDatabase() {
             const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
             if (parts.length >= 2) {
-                // Remove potential quotes around fields
                 const cleanParts = parts.map(p => p.trim().replace(/^"|"$/g, ''));
-
                 const name = cleanParts[0];
                 let rawUrl = cleanParts[1];
                 const count = cleanParts[2] || '0';
@@ -109,9 +105,7 @@ async function updateDatabase() {
 
                 if (!rawUrl) continue;
 
-                // 正規化 URL
-                let url = rawUrl.replace(/^https?:\/\//, '');
-                url = url.replace(/\/$/, '');
+                let url = rawUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
                 if (url) {
                     data[url] = {
@@ -124,8 +118,97 @@ async function updateDatabase() {
                 }
             }
         }
+    } catch (e) {
+        console.error('Error fetching dataset 160055:', e);
+    }
+    return data;
+}
 
-        const totalEntries = lines.length - 2;
+async function fetchDataset165027(config) {
+    const data = {};
+    try {
+        let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/165027';
+
+        if (config && config.datasets && Array.isArray(config.datasets)) {
+            const ds = config.datasets.find(d => d.id === '165027');
+            if (ds && ds.url) {
+                govApiUrl = ds.url;
+            }
+        }
+
+        console.log(`Fetching metadata from Gov API 165027: ${govApiUrl}`);
+
+        const govResponse = await fetch(govApiUrl);
+        if (!govResponse.ok) throw new Error('Gov API fetch failed');
+
+        const govJson = await govResponse.json();
+        // Find JSON distribution
+        let downloadUrl = null;
+        const distributions = govJson?.result?.distribution || [];
+        for (const dist of distributions) {
+            if (dist.resourceFormat === 'JSON') {
+                downloadUrl = dist.resourceDownloadUrl;
+                break;
+            }
+        }
+        // Fallback to first if no JSON specific found (though we expect JSON)
+        if (!downloadUrl) downloadUrl = distributions[0]?.resourceDownloadUrl;
+
+        if (!downloadUrl) throw new Error('Could not find download URL for 165027');
+
+        console.log(`Downloading JSON 165027 from: ${downloadUrl}`);
+        const response = await fetch(downloadUrl);
+        if (!response.ok) throw new Error('JSON download failed');
+
+        const jsonList = await response.json();
+
+        for (const item of jsonList) {
+            const domain = item['網域名稱'];
+            if (domain) {
+                data[domain] = {
+                    name: 'TWNIC Suspicious Domain', // Default name/description
+                    url: item['偽冒網址'] || domain,
+                    count: '0',
+                    startDate: item['詐騙網站創建日期'] || '',
+                    endDate: ''
+                };
+            }
+        }
+
+    } catch (e) {
+        console.error('Error fetching dataset 165027:', e);
+    }
+    return data;
+}
+
+// 擷取並更新詐騙資料庫
+async function updateDatabase() {
+    try {
+        console.log('Starting full database update...');
+
+        // 1. Fetch Config Once
+        let config = null;
+        try {
+            const configResponse = await fetch(CONFIG_URL);
+            if (configResponse.ok) {
+                config = await configResponse.json();
+            }
+        } catch (configError) {
+            console.warn('Failed to fetch config, using defaults', configError);
+        }
+
+        // Parallel fetch
+        const [data1, data2] = await Promise.all([
+            fetchDataset160055(config),
+            fetchDataset165027(config)
+        ]);
+
+        const mergedData = { ...data1, ...data2 };
+        const totalEntries = Object.keys(mergedData).length;
+
+        if (totalEntries === 0) {
+            throw new Error('No data fetched from any source');
+        }
 
         // Save metadata to storage.local
         await chrome.storage.local.set({
@@ -135,13 +218,13 @@ async function updateDatabase() {
         });
 
         // Save big data to IndexedDB
-        await saveToIndexedDB(data);
+        await saveToIndexedDB(mergedData);
 
-        cachedDatabase = data; // Update cache
+        cachedDatabase = mergedData; // Update cache
 
         // 確保下次更新已排程並顯示
         scheduleDailyUpdate();
-        console.log(`Database updated. Loaded ${Object.keys(data).length} unique sites, ${totalEntries} total records.`);
+        console.log(`Database updated. Loaded ${totalEntries} unique sites.`);
         return { success: true, count: totalEntries };
 
     } catch (error) {

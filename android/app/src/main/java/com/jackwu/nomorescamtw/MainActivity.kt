@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleManualUpdate() {
+        performUpdate(isManual = true)
         val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val lastAttempt = prefs.getLong(KEY_LAST_MANUAL_ATTEMPT, 0)
         val now = System.currentTimeMillis()
