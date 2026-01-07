@@ -56,6 +56,7 @@ const CONFIG_URL = 'https://cdn.jsdelivr.net/gh/asadman1523/NoMoreScamTW@main/se
 
 async function fetchDataset160055(config) {
     const data = {};
+    let rawCount = 0;
     try {
         console.log('Fetching remote config for 160055...');
         let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/160055'; // Default
@@ -108,6 +109,7 @@ async function fetchDataset160055(config) {
                 let url = rawUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
                 if (url) {
+                    rawCount++;
                     data[url] = {
                         name: name,
                         url: rawUrl,
@@ -121,11 +123,12 @@ async function fetchDataset160055(config) {
     } catch (e) {
         console.error('Error fetching dataset 160055:', e);
     }
-    return data;
+    return { data, count: rawCount };
 }
 
 async function fetchDataset165027(config) {
     const data = {};
+    let rawCount = 0;
     try {
         let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/165027';
 
@@ -165,6 +168,7 @@ async function fetchDataset165027(config) {
         for (const item of jsonList) {
             const domain = item['網域名稱'];
             if (domain) {
+                rawCount++;
                 data[domain] = {
                     name: 'TWNIC Suspicious Domain', // Default name/description
                     url: item['偽冒網址'] || domain,
@@ -178,7 +182,7 @@ async function fetchDataset165027(config) {
     } catch (e) {
         console.error('Error fetching dataset 165027:', e);
     }
-    return data;
+    return { data, count: rawCount };
 }
 
 // 擷取並更新詐騙資料庫
@@ -198,22 +202,26 @@ async function updateDatabase() {
         }
 
         // Parallel fetch
-        const [data1, data2] = await Promise.all([
+        const [result1, result2] = await Promise.all([
             fetchDataset160055(config),
             fetchDataset165027(config)
         ]);
 
-        const mergedData = { ...data1, ...data2 };
-        const totalEntries = Object.keys(mergedData).length;
+        const data1 = result1.data;
+        const data2 = result2.data;
+        const totalRawCount = result1.count + result2.count;
 
-        if (totalEntries === 0) {
+        const mergedData = { ...data1, ...data2 };
+        const uniqueEntries = Object.keys(mergedData).length;
+
+        if (uniqueEntries === 0) {
             throw new Error('No data fetched from any source');
         }
 
         // Save metadata to storage.local
         await chrome.storage.local.set({
             lastUpdated: Date.now(),
-            totalEntries: totalEntries,
+            totalEntries: totalRawCount, // Use raw count as requested
             lastError: null // Clear error
         });
 
@@ -224,8 +232,8 @@ async function updateDatabase() {
 
         // 確保下次更新已排程並顯示
         scheduleDailyUpdate();
-        console.log(`Database updated. Loaded ${totalEntries} unique sites.`);
-        return { success: true, count: totalEntries };
+        console.log(`Database updated. Loaded ${totalRawCount} raw records (${uniqueEntries} unique sites).`);
+        return { success: true, count: totalRawCount };
 
     } catch (error) {
         console.error('Failed to update database:', error);

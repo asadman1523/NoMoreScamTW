@@ -40,15 +40,17 @@ class FraudRepository(
             }
 
             // --- Source 1: Dataset 160055 (CSV) ---
+            var count1 = 0
             try {
-                fetchDataset160055(entities, visitedDomains, configMap)
+                count1 = fetchDataset160055(entities, visitedDomains, configMap)
             } catch (e: Exception) {
                 Log.e("FraudRepository", "Failed to fetch dataset 160055", e)
             }
 
             // --- Source 2: Dataset 165027 (JSON) ---
+            var count2 = 0
             try {
-                fetchDataset165027(entities, visitedDomains, configMap)
+                count2 = fetchDataset165027(entities, visitedDomains, configMap)
             } catch (e: Exception) {
                 Log.e("FraudRepository", "Failed to fetch dataset 165027", e)
             }
@@ -56,7 +58,8 @@ class FraudRepository(
             if (entities.isNotEmpty()) {
                 fraudDao.deleteAll()
                 fraudDao.insertAll(entities)
-                Result.success(entities.size)
+                // Return total raw count as requested
+                Result.success(count1 + count2)
             } else {
                 Result.failure(Exception("No data parsed from any source"))
             }
@@ -67,8 +70,9 @@ class FraudRepository(
         }
     }
 
-    private suspend fun fetchDataset160055(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?) {
+    private suspend fun fetchDataset160055(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?): Int {
         var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/160055"
+        var recordCount = 0
         
         // Try to override with server config
         try {
@@ -88,7 +92,7 @@ class FraudRepository(
         Log.i("FraudRepository", "Fetching metadata 160055: $targetDatasetUrl")
         val downloadUrl = fetchDownloadUrlFromMetadata(targetDatasetUrl) ?: run {
             Log.e("FraudRepository", "No download URL for 160055")
-            return
+            return 0
         }
 
         Log.i("FraudRepository", "Downloading CSV 160055: $downloadUrl")
@@ -105,21 +109,26 @@ class FraudRepository(
                 if (rawUrl.isEmpty()) continue
                 
                 var url = rawUrl.replace(Regex("^https?://"), "").replace(Regex("/$"), "")
-                if (url.isNotEmpty() && !visitedDomains.contains(url)) {
-                    val name = cleanParts[0]
-                    val count = cleanParts.getOrNull(2)?.toIntOrNull() ?: 0
-                    val startDate = cleanParts.getOrNull(3) ?: ""
-                    val endDate = cleanParts.getOrNull(4) ?: ""
-                    
-                    entities.add(FraudSite(url, name, count, startDate, endDate))
-                    visitedDomains.add(url)
+                if (url.isNotEmpty()) {
+                    recordCount++ // Count every valid URL found
+                    if (!visitedDomains.contains(url)) {
+                        val name = cleanParts[0]
+                        val count = cleanParts.getOrNull(2)?.toIntOrNull() ?: 0
+                        val startDate = cleanParts.getOrNull(3) ?: ""
+                        val endDate = cleanParts.getOrNull(4) ?: ""
+                        
+                        entities.add(FraudSite(url, name, count, startDate, endDate))
+                        visitedDomains.add(url)
+                    }
                 }
             }
         }
+        return recordCount
     }
 
-    private suspend fun fetchDataset165027(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?) {
+    private suspend fun fetchDataset165027(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?): Int {
         var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/165027"
+        var recordCount = 0
         
         // Try to override with server config
         try {
@@ -140,7 +149,7 @@ class FraudRepository(
 
         val downloadUrl = fetchDownloadUrlFromMetadata(targetDatasetUrl, "JSON") ?: run {
             Log.e("FraudRepository", "No download URL for 165027")
-            return
+            return 0
         }
         
         Log.i("FraudRepository", "Downloading JSON 165027: $downloadUrl")
@@ -152,15 +161,18 @@ class FraudRepository(
 
         for (item in rawList) {
             val domain = item["網域名稱"] ?: ""
-            if (domain.isNotEmpty() && !visitedDomains.contains(domain)) {
-                // Dataset 165027 fields are different, we adapt them to match FraudSite
-                val name = "TWNIC Suspicious Domain" // No specific name field in sample, maybe use '一頁式詐騙購物網站' as description?
-                // The sample showed "一頁式詐騙購物網站": "連至PChome..." which is a description.
-                
-                entities.add(FraudSite(domain, name, 0, item["詐騙網站創建日期"] ?: "", ""))
-                visitedDomains.add(domain)
+            if (domain.isNotEmpty()) {
+                recordCount++ // Count every valid domain found
+                if (!visitedDomains.contains(domain)) {
+                    // Dataset 165027 fields are different, we adapt them to match FraudSite
+                    val name = "TWNIC Suspicious Domain" 
+                    
+                    entities.add(FraudSite(domain, name, 0, item["詐騙網站創建日期"] ?: "", ""))
+                    visitedDomains.add(domain)
+                }
             }
         }
+        return recordCount
     }
 
     private fun fetchDownloadUrlFromMetadata(metadataUrl: String, format: String = ""): String? {
