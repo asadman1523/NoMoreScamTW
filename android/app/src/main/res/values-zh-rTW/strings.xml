@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">麥騙</string>
-    <string name="warning_title">⚠️ 偵測到詐騙網站，請立即離開</string>
+    <string name="warning_title">這是詐騙網站，請立即離開</string>
     <string name="warning_default_detail">此網站已被列入政府詐騙清單</string>
     <string name="db_status">資料庫狀態：已載入 %1$d 筆資料</string>
     <string name="btn_update">更新資料庫</string>
@@ -9,7 +9,7 @@
     <string name="btn_check">檢查網址</string>
     <string name="result_placeholder">檢查網址以查看結果</string>
     <string name="msg_safe">✅ 目前安全 (不在資料庫中)</string>
-    <string name="msg_scam_detected">⚠️ 偵測到詐騙網址</string>
+    <string name="msg_scam_detected">偵測到詐騙網址</string>
     <string name="toast_updating">更新中...</string>
     <string name="toast_update_finished">更新完成</string>
     <string name="label_name">名稱</string>
@@ -51,6 +51,7 @@
     <string name="update_cooldown">請等待 %1$d 分鐘後再嘗試更新。</string>
     <string name="auto_update_started">正在自動更新資料庫...</string>
     <string name="btn_leave">立即離開</string>
+    <string name="overlay_branding">(麥騙 - 防詐騙偵測服務)</string>
     <string name="btn_continue_browsing">繼續瀏覽</string>
     <string name="option_show_leave">顯示「立即離開」按鈕</string>
 

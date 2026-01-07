@@ -7,6 +7,8 @@ import android.graphics.PixelFormat
 import android.net.Uri
 import android.os.Build
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +31,9 @@ class ScamDetectionService : AccessibilityService() {
     private var windowManager: WindowManager? = null
     private var lastCheckedUrl: String = ""
     private var countdownTimer: CountDownTimer? = null
+    private val hideHandler = Handler(Looper.getMainLooper())
+    private var pendingHideRunnable: Runnable? = null
+    private val HIDE_DELAY_AFTER_SAFE = 5000L // 10 seconds delay after leaving scam page
 
     // Supported browser package names and their URL bar IDs
     private val browserConfig = mapOf(
@@ -81,14 +86,34 @@ class ScamDetectionService : AccessibilityService() {
             val result = repository.checkUrl(url)
             if (result != null) {
                 withContext(Dispatchers.Main) {
+                    // Cancel any pending hide when scam is detected
+                    cancelPendingHide()
                     showOverlay(result.name, result.count, result.url)
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    hideOverlay()
+                    // Delay hiding overlay by 10 seconds to handle URL redirects
+                    scheduleHideOverlay()
                 }
             }
         }
+    }
+
+    private fun cancelPendingHide() {
+        pendingHideRunnable?.let { hideHandler.removeCallbacks(it) }
+        pendingHideRunnable = null
+    }
+
+    private fun scheduleHideOverlay() {
+        // Only schedule if overlay is showing and no pending hide
+        if (overlayView == null || pendingHideRunnable != null) return
+
+        pendingHideRunnable = Runnable {
+            hideOverlay()
+            pendingHideRunnable = null
+        }
+        // Wait 10 seconds after leaving scam page before hiding overlay
+        hideHandler.postDelayed(pendingHideRunnable!!, HIDE_DELAY_AFTER_SAFE)
     }
 
     private fun showOverlay(name: String, count: Int, url: String) {
@@ -162,6 +187,7 @@ class ScamDetectionService : AccessibilityService() {
     }
 
     private fun hideOverlay() {
+        cancelPendingHide()
         countdownTimer?.cancel()
         countdownTimer = null
 
@@ -176,11 +202,13 @@ class ScamDetectionService : AccessibilityService() {
     }
 
     override fun onInterrupt() {
+        cancelPendingHide()
         hideOverlay()
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
+        cancelPendingHide()
         hideOverlay()
     }
 }

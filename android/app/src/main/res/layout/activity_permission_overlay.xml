@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:padding="24dp">
+    android:padding="32dp">
 
     <!-- Top Content Container: Now Centered -->
     <LinearLayout

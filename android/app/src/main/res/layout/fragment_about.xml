@@ -95,7 +95,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="@string/about_github_display"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="@color/primary_blue"
                     android:textSize="18sp" />
 
             </LinearLayout>

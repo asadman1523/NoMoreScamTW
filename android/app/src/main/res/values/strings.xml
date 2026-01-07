@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">NoMoreScamTW</string>
-    <string name="warning_title">⚠️ Scam Website Detected, please be careful with your funds</string>
+    <string name="warning_title">Scam Website Detected, Leave now.</string>
     <string name="warning_default_detail">This site is on the government\'s scam list.</string>
     <string name="db_status">Database Status: Loaded %1$d entries</string>
     <string name="btn_update">Update Database</string>
@@ -9,7 +9,7 @@
     <string name="btn_check">Check URL</string>
     <string name="result_placeholder">Check a URL to see results</string>
     <string name="msg_safe">✅ Safe (Not in database)</string>
-    <string name="msg_scam_detected">⚠️ Scam detected</string>
+    <string name="msg_scam_detected">Scam detected</string>
     <string name="toast_updating">Updating...</string>
     <string name="toast_update_finished">Update Finished</string>
     <string name="label_name">Name</string>
@@ -51,6 +51,7 @@
     <string name="update_cooldown">Please wait %1$d minutes before updating again.</string>
     <string name="auto_update_started">Auto-updating database...</string>
     <string name="btn_leave">Leave</string>
+    <string name="overlay_branding">(NoMoreScamTW - Scam Detection Service)</string>
     <string name="btn_continue_browsing">Continue Browsing</string>
     <string name="option_show_leave">Show \"Leave Immediately\" button</string>
 
