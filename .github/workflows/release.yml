@@ -20,7 +20,7 @@ jobs:
       # --- Chrome Extension ---
       - name: Package Chrome Extension
         run: |
-          cd extension
+          cd chrome_extension
           zip -r ../NoMoreScamTW_Extension.zip . -x "*.git*" "test_logic.js" ".gitignore" "node_modules/*"
           cd ..
 
