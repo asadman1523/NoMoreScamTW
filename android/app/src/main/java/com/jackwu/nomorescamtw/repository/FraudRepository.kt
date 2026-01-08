@@ -22,7 +22,7 @@ class FraudRepository(
         try {
             val entities = mutableListOf<FraudSite>()
             val visitedDomains = mutableSetOf<String>()
-            
+
             // 1. Fetch Config Once
             var configMap: Map<*, *>? = null
             try {
@@ -31,7 +31,7 @@ class FraudRepository(
                 val request = okhttp3.Request.Builder().url(configUrl).build()
                 val response = client.newCall(request).execute()
                 val configJson = response.body()?.string()
-                
+
                 if (configJson != null) {
                     val gson = Gson()
                     configMap = gson.fromJson(configJson, Map::class.java) as Map<*, *>
@@ -58,6 +58,7 @@ class FraudRepository(
                 Log.e("FraudRepository", "Failed to fetch dataset 176455", e)
             }
 
+            if (entities.isNotEmpty()) {
                 fraudDao.deleteAll()
                 fraudDao.insertAll(entities)
                 // Return total raw count as requested
@@ -65,7 +66,6 @@ class FraudRepository(
             } else {
                 Result.failure(Exception("No data parsed from any source"))
             }
-
         } catch (e: Exception) {
             Log.e("FraudRepository", "Error updating database", e)
             Result.failure(e)
@@ -262,7 +262,6 @@ class FraudRepository(
     
     suspend fun getDatabaseSize(): Int {
         return fraudDao.getCount()
-    }
     }
 
     suspend fun incrementStat(statName: String) = withContext(Dispatchers.IO) {

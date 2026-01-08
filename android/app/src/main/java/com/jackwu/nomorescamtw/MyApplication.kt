@@ -7,7 +7,6 @@ import com.jackwu.nomorescamtw.network.FirebaseApiService
 import com.jackwu.nomorescamtw.network.FraudApiService
 import com.jackwu.nomorescamtw.repository.FraudRepository
 import retrofit2.Retrofit
-import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
@@ -27,8 +26,6 @@ class MyApplication : Application() {
             .baseUrl("https://opdadm.moi.gov.tw/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
-
-        val apiService = retrofit.create(FraudApiService::class.java)
 
         val apiService = retrofit.create(FraudApiService::class.java)
 
