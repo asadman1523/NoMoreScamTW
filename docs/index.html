@@ -143,26 +143,24 @@
             databaseURL: "https://nomorescamtw.firebaseio.com"
         };
 
-        if (firebaseConfig.databaseURL.includes("nomorescamtw")) {
-            alert("請修改 index.html 中的 firebaseConfig 以連接到您的資料庫！");
-        } else {
-            const app = initializeApp(firebaseConfig);
-            const db = getDatabase(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-            // Listen to 'stats' node
-            const statsRef = ref(db, 'stats');
-            onValue(statsRef, (snapshot) => {
-                const data = snapshot.val() || {};
+        // Listen to 'stats' node
+        const statsRef = ref(db, 'stats');
+        onValue(statsRef, (snapshot) => {
+            const data = snapshot.val() || {};
 
-                animateValue("total_installs", data.total_installs || 0);
-                animateValue("total_warnings", data.total_warnings || 0);
-                animateValue("total_queries", data.total_queries || 0);
+            animateValue("total_installs", data.total_installs || 0);
+            animateValue("total_warnings", data.total_warnings || 0);
+            animateValue("total_queries", data.total_queries || 0);
 
-                document.getElementById("last_update").textContent = new Date().toLocaleTimeString();
-            }, (error) => {
-                console.error("Firebase Read Error", error);
-                document.getElementById("last_update").textContent = "Connection Error";
-            });
+            document.getElementById("last_update").textContent = new Date().toLocaleTimeString();
+        }, (error) => {
+            console.error("Firebase Read Error", error);
+            document.getElementById("last_update").textContent = "Connection Error";
+        });
         }
 
         // Simple animation for numbers
