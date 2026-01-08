@@ -54,77 +54,7 @@ async function getFromIndexedDB(url) {
 
 const CONFIG_URL = 'https://cdn.jsdelivr.net/gh/asadman1523/NoMoreScamTW@main/server_config.json';
 
-async function fetchDataset160055(config) {
-    const data = {};
-    let rawCount = 0;
-    try {
-        console.log('Fetching remote config for 160055...');
-        let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/160055'; // Default
 
-        if (config) {
-            if (config.datasets && Array.isArray(config.datasets)) {
-                const ds = config.datasets.find(d => d.id === '160055');
-                if (ds && ds.url) {
-                    govApiUrl = ds.url;
-                }
-            } else if (config.fraud_api_url) {
-                govApiUrl = config.fraud_api_url;
-            }
-        }
-
-        console.log(`Fetching metadata from Gov API 160055: ${govApiUrl}`);
-        const govResponse = await fetch(govApiUrl);
-        if (!govResponse.ok) throw new Error('Gov API fetch failed');
-
-        const govJson = await govResponse.json();
-        const downloadUrl = govJson?.result?.distribution?.[0]?.resourceDownloadUrl;
-
-        if (!downloadUrl) throw new Error('Could not find download URL in Gov API JSON');
-
-        console.log(`Downloading CSV 160055 from: ${downloadUrl}`);
-        const response = await fetch(downloadUrl);
-        if (!response.ok) throw new Error('CSV download failed');
-
-        const text = await response.text();
-        const lines = text.split(/\r?\n/);
-
-        // CSV Header: WEBSITE_NM,WEBURL,CNT,STA_SDATE,STA_EDATE
-        for (let i = 2; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
-
-            // Regex to split by comma, ignoring commas inside quotes
-            const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-
-            if (parts.length >= 2) {
-                const cleanParts = parts.map(p => p.trim().replace(/^"|"$/g, ''));
-                const name = cleanParts[0];
-                let rawUrl = cleanParts[1];
-                const count = cleanParts[2] || '0';
-                const startDate = cleanParts[3] || '';
-                const endDate = cleanParts[4] || '';
-
-                if (!rawUrl) continue;
-
-                let url = rawUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
-
-                if (url) {
-                    rawCount++;
-                    data[url] = {
-                        name: name,
-                        url: rawUrl,
-                        count: count,
-                        startDate: startDate,
-                        endDate: endDate
-                    };
-                }
-            }
-        }
-    } catch (e) {
-        console.error('Error fetching dataset 160055:', e);
-    }
-    return { data, count: rawCount };
-}
 
 async function fetchDataset165027(config) {
     const data = {};
@@ -185,6 +115,75 @@ async function fetchDataset165027(config) {
     return { data, count: rawCount };
 }
 
+async function fetchDataset176455(config) {
+    const data = {};
+    let rawCount = 0;
+    try {
+        console.log('Fetching remote config for 176455...');
+        let govApiUrl = 'https://data.gov.tw/api/v2/rest/dataset/176455';
+
+        if (config) {
+            if (config.datasets && Array.isArray(config.datasets)) {
+                const ds = config.datasets.find(d => d.id === '176455');
+                if (ds && ds.url) {
+                    govApiUrl = ds.url;
+                }
+            }
+        }
+
+        console.log(`Fetching metadata from Gov API 176455: ${govApiUrl}`);
+        const govResponse = await fetch(govApiUrl);
+        if (!govResponse.ok) throw new Error('Gov API 176455 fetch failed');
+
+        const govJson = await govResponse.json();
+        const downloadUrl = govJson?.result?.distribution?.[0]?.resourceDownloadUrl;
+
+        if (!downloadUrl) throw new Error('Could not find download URL in Gov API JSON 176455');
+
+        console.log(`Downloading CSV 176455 from: ${downloadUrl}`);
+        const response = await fetch(downloadUrl);
+        if (!response.ok) throw new Error('CSV 176455 download failed');
+
+        const text = await response.text();
+        const lines = text.split(/\r?\n/);
+
+        // CSV Header: WEBSITE_NM,WEBURL,CNT,STA_SDATE,STA_EDATE
+        for (let i = 2; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+
+            const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
+            if (parts.length >= 2) {
+                const cleanParts = parts.map(p => p.trim().replace(/^"|"$/g, ''));
+                const name = cleanParts[0];
+                let rawUrl = cleanParts[1];
+                const count = cleanParts[2] || '0';
+                const startDate = cleanParts[3] || '';
+                const endDate = cleanParts[4] || '';
+
+                if (!rawUrl) continue;
+
+                let url = rawUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
+                if (url) {
+                    rawCount++;
+                    data[url] = {
+                        name: name,
+                        url: rawUrl,
+                        count: count,
+                        startDate: startDate,
+                        endDate: endDate
+                    };
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Error fetching dataset 176455:', e);
+    }
+    return { data, count: rawCount };
+}
+
 // 擷取並更新詐騙資料庫
 async function updateDatabase() {
     try {
@@ -202,16 +201,16 @@ async function updateDatabase() {
         }
 
         // Parallel fetch
-        const [result1, result2] = await Promise.all([
-            fetchDataset160055(config),
-            fetchDataset165027(config)
+        const [result2, result3] = await Promise.all([
+            fetchDataset165027(config),
+            fetchDataset176455(config)
         ]);
 
-        const data1 = result1.data;
         const data2 = result2.data;
-        const totalRawCount = result1.count + result2.count;
+        const data3 = result3.data;
+        const totalRawCount = result2.count + result3.count;
 
-        const mergedData = { ...data1, ...data2 };
+        const mergedData = { ...data2, ...data3 };
         const uniqueEntries = Object.keys(mergedData).length;
 
         if (uniqueEntries === 0) {

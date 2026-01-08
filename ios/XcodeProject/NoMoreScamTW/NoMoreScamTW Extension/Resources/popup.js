@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!info) {
                 // Fetch both 160055 and 165027
                 Promise.all([
-                    // 160055 CSV
-                    fetch('https://data.gov.tw/api/v2/rest/dataset/160055')
+                    // 176455 CSV
+                    fetch('https://data.gov.tw/api/v2/rest/dataset/176455')
                         .then(res => res.json())
                         .then(json => fetch(json.result.distribution[0].resourceDownloadUrl))
                         .then(res => res.text()),
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         let source = '';
                         const lowerText = csvText.toLowerCase();
 
-                        // --- Check CSV (160055) ---
+                        // --- Check CSV (176455) ---
                         // Check Full URL
                         if (lowerText.includes(',' + cleanFullUrl) || lowerText.includes('//' + cleanFullUrl)) {
                             found = true;

@@ -14,7 +14,8 @@ import com.google.gson.reflect.TypeToken
 
 class FraudRepository(
     private val fraudDao: FraudDao,
-    private val apiService: FraudApiService
+    private val apiService: FraudApiService,
+    private val firebaseService: com.jackwu.nomorescamtw.network.FirebaseApiService
 ) {
 
     suspend fun updateDatabase(): Result<Int> = withContext(Dispatchers.IO) {
@@ -39,13 +40,7 @@ class FraudRepository(
                 Log.w("FraudRepository", "Config fetch failed, using defaults", e)
             }
 
-            // --- Source 1: Dataset 160055 (CSV) ---
-            var count1 = 0
-            try {
-                count1 = fetchDataset160055(entities, visitedDomains, configMap)
-            } catch (e: Exception) {
-                Log.e("FraudRepository", "Failed to fetch dataset 160055", e)
-            }
+
 
             // --- Source 2: Dataset 165027 (JSON) ---
             var count2 = 0
@@ -55,11 +50,18 @@ class FraudRepository(
                 Log.e("FraudRepository", "Failed to fetch dataset 165027", e)
             }
 
-            if (entities.isNotEmpty()) {
+            // --- Source 3: Dataset 176455 (CSV) - 165反詐騙諮詢專線_遭停止解析涉詐網站 ---
+            var count3 = 0
+            try {
+                count3 = fetchDataset176455(entities, visitedDomains, configMap)
+            } catch (e: Exception) {
+                Log.e("FraudRepository", "Failed to fetch dataset 176455", e)
+            }
+
                 fraudDao.deleteAll()
                 fraudDao.insertAll(entities)
                 // Return total raw count as requested
-                Result.success(count1 + count2)
+                Result.success(count2 + count3)
             } else {
                 Result.failure(Exception("No data parsed from any source"))
             }
@@ -70,61 +72,7 @@ class FraudRepository(
         }
     }
 
-    private suspend fun fetchDataset160055(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?): Int {
-        var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/160055"
-        var recordCount = 0
-        
-        // Try to override with server config
-        try {
-            val datasets = configMap?.get("datasets") as? List<Map<*, *>>
-            datasets?.forEach { dataset ->
-                if (dataset["id"] == "160055") {
-                    val url = dataset["url"] as? String
-                    if (!url.isNullOrEmpty()) {
-                        targetDatasetUrl = url
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.w("FraudRepository", "Config parse failed 160055", e)
-        }
 
-        Log.i("FraudRepository", "Fetching metadata 160055: $targetDatasetUrl")
-        val downloadUrl = fetchDownloadUrlFromMetadata(targetDatasetUrl) ?: run {
-            Log.e("FraudRepository", "No download URL for 160055")
-            return 0
-        }
-
-        Log.i("FraudRepository", "Downloading CSV 160055: $downloadUrl")
-        val csvContent = apiService.downloadDatabase(downloadUrl)
-        
-        val lines = csvContent.lines()
-        for (i in 2 until lines.size) {
-            val line = lines[i].trim()
-            if (line.isEmpty()) continue
-            val parts = line.split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)".toRegex())
-            if (parts.size >= 2) {
-                val cleanParts = parts.map { it.trim().removeSurrounding("\"") }
-                val rawUrl = cleanParts[1]
-                if (rawUrl.isEmpty()) continue
-                
-                var url = rawUrl.replace(Regex("^https?://"), "").replace(Regex("/$"), "")
-                if (url.isNotEmpty()) {
-                    recordCount++ // Count every valid URL found
-                    if (!visitedDomains.contains(url)) {
-                        val name = cleanParts[0]
-                        val count = cleanParts.getOrNull(2)?.toIntOrNull() ?: 0
-                        val startDate = cleanParts.getOrNull(3) ?: ""
-                        val endDate = cleanParts.getOrNull(4) ?: ""
-                        
-                        entities.add(FraudSite(url, name, count, startDate, endDate))
-                        visitedDomains.add(url)
-                    }
-                }
-            }
-        }
-        return recordCount
-    }
 
     private suspend fun fetchDataset165027(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?): Int {
         var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/165027"
@@ -169,6 +117,62 @@ class FraudRepository(
                     
                     entities.add(FraudSite(domain, name, 0, item["詐騙網站創建日期"] ?: "", ""))
                     visitedDomains.add(domain)
+                }
+            }
+        }
+        return recordCount
+    }
+
+    private suspend fun fetchDataset176455(entities: MutableList<FraudSite>, visitedDomains: MutableSet<String>, configMap: Map<*, *>?): Int {
+        var targetDatasetUrl = "https://data.gov.tw/api/v2/rest/dataset/176455"
+        var recordCount = 0
+        
+        // Try to override with server config
+        try {
+            val datasets = configMap?.get("datasets") as? List<Map<*, *>>
+            datasets?.forEach { dataset ->
+                if (dataset["id"] == "176455") {
+                    val url = dataset["url"] as? String
+                    if (!url.isNullOrEmpty()) {
+                        targetDatasetUrl = url
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.w("FraudRepository", "Config parse failed 176455", e)
+        }
+
+        Log.i("FraudRepository", "Fetching metadata 176455: $targetDatasetUrl")
+        val downloadUrl = fetchDownloadUrlFromMetadata(targetDatasetUrl) ?: run {
+            Log.e("FraudRepository", "No download URL for 176455")
+            return 0
+        }
+
+        Log.i("FraudRepository", "Downloading CSV 176455: $downloadUrl")
+        val csvContent = apiService.downloadDatabase(downloadUrl)
+        
+        val lines = csvContent.lines()
+        for (i in 2 until lines.size) {
+            val line = lines[i].trim()
+            if (line.isEmpty()) continue
+            val parts = line.split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)".toRegex())
+            if (parts.size >= 2) {
+                val cleanParts = parts.map { it.trim().removeSurrounding("\"") }
+                val rawUrl = cleanParts[1]
+                if (rawUrl.isEmpty()) continue
+                
+                var url = rawUrl.replace(Regex("^https?://"), "").replace(Regex("/$"), "")
+                if (url.isNotEmpty()) {
+                    recordCount++ // Count every valid URL found
+                    if (!visitedDomains.contains(url)) {
+                        val name = cleanParts[0]
+                        val count = cleanParts.getOrNull(2)?.toIntOrNull() ?: 0
+                        val startDate = cleanParts.getOrNull(3) ?: ""
+                        val endDate = cleanParts.getOrNull(4) ?: ""
+                        
+                        entities.add(FraudSite(url, name, count, startDate, endDate))
+                        visitedDomains.add(url)
+                    }
                 }
             }
         }
@@ -258,5 +262,22 @@ class FraudRepository(
     
     suspend fun getDatabaseSize(): Int {
         return fraudDao.getCount()
+    }
+    }
+
+    suspend fun incrementStat(statName: String) = withContext(Dispatchers.IO) {
+        if (com.jackwu.nomorescamtw.Config.FIREBASE_DB_URL.contains("YOUR_PROJECT_ID")) {
+            return@withContext
+        }
+        try {
+            // 1. Get current count
+            val response = firebaseService.getStat(statName)
+            val currentCount = if (response.isSuccessful) response.body() ?: 0 else 0
+            
+            // 2. Increment
+            firebaseService.setStat(statName, currentCount + 1)
+        } catch (e: Exception) {
+            Log.e("FraudRepository", "Failed to increment stat: $statName", e)
+        }
     }
 }

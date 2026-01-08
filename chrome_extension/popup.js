@@ -34,6 +34,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        // Firebase Logging (Manual Query)
+        if (typeof FIREBASE_CONFIG !== 'undefined') {
+            // Simple version reusing the logic if possible, or duplicate fetch here since popup.js is separate context
+            // popup.js can access background page via chrome.extension.getBackgroundPage() but it's MV3...
+            // In MV3, getBackgroundPage is not reliable for Service Workers.
+            // We should send a message to background to log it, OR just do fetch here.
+            // Fetch here is easier as we don't need to wake up SW if not needed.
+            // But we need config. Let's assume config is loaded in popup.html or we fetch it.
+            // Let's add <script src="firebase_config.js"></script> to popup.html first.
+            // For now, let's implement the fetch inline assuming config global exists.
+            if (window.FIREBASE_CONFIG && !window.FIREBASE_CONFIG.databaseURL.includes('YOUR_PROJECT_ID')) {
+                const statUrl = `${window.FIREBASE_CONFIG.databaseURL}/stats/total_queries.json`;
+                fetch(statUrl).then(res => res.json()).then(count => {
+                    fetch(statUrl, { method: 'PUT', body: JSON.stringify((count || 0) + 1) });
+                }).catch(e => console.error('Log query failed', e));
+            }
+        }
+
         resultDiv.innerHTML = '<span style="color: #666;">查詢中...</span>';
 
         chrome.storage.local.get(['fraudDatabase'], (items) => {
@@ -72,8 +90,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!info) {
                 // Fetch both 160055 and 165027
                 Promise.all([
-                    // 160055 CSV
-                    fetch('https://data.gov.tw/api/v2/rest/dataset/160055')
+                    // 176455 CSV
+                    fetch('https://data.gov.tw/api/v2/rest/dataset/176455')
                         .then(res => res.json())
                         .then(json => fetch(json.result.distribution[0].resourceDownloadUrl))
                         .then(res => res.text()),
@@ -93,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         let source = '';
                         const lowerText = csvText.toLowerCase();
 
-                        // --- Check CSV (160055) ---
+                        // --- Check CSV (176455) ---
                         // Check Full URL
                         if (lowerText.includes(',' + cleanFullUrl) || lowerText.includes('//' + cleanFullUrl)) {
                             found = true;

@@ -3,9 +3,12 @@ package com.jackwu.nomorescamtw
 import android.app.Application
 import androidx.room.Room
 import com.jackwu.nomorescamtw.data.AppDatabase
+import com.jackwu.nomorescamtw.network.FirebaseApiService
 import com.jackwu.nomorescamtw.network.FraudApiService
 import com.jackwu.nomorescamtw.repository.FraudRepository
 import retrofit2.Retrofit
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class MyApplication : Application() {
@@ -27,6 +30,16 @@ class MyApplication : Application() {
 
         val apiService = retrofit.create(FraudApiService::class.java)
 
-        repository = FraudRepository(database.fraudDao(), apiService)
+        val apiService = retrofit.create(FraudApiService::class.java)
+
+        // Firebase Retrofit
+        val firebaseRetrofit = Retrofit.Builder()
+            .baseUrl(Config.FIREBASE_DB_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            
+        val firebaseService = firebaseRetrofit.create(FirebaseApiService::class.java)
+
+        repository = FraudRepository(database.fraudDao(), apiService, firebaseService)
     }
 }

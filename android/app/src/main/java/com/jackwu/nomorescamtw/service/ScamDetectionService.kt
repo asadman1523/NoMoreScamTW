@@ -89,6 +89,9 @@ class ScamDetectionService : AccessibilityService() {
                     // Cancel any pending hide when scam is detected
                     cancelPendingHide()
                     showOverlay(result.name, result.count, result.url)
+                    
+                    // Log Warning to Firebase
+                    repository.incrementStat("total_warnings")
                 }
             } else {
                 withContext(Dispatchers.Main) {

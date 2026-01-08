@@ -3,7 +3,7 @@ package com.jackwu.nomorescamtw.network
 import retrofit2.http.GET
 
 interface GovApiService {
-    @GET("160055")
+    @GET("176455")
     suspend fun getFraudDatasetMetadata(): GovDatasetResponse
 }
 

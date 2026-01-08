@@ -42,6 +42,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Track Install (First Open)
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("has_tracked_install", false)) {
+             lifecycleScope.launch {
+                 (application as MyApplication).repository.incrementStat("total_installs")
+                 prefs.edit().putBoolean("has_tracked_install", true).apply()
+             }
+        }
+
         llWarningBar = findViewById(R.id.llWarningBar)
         tvWarningDetail = findViewById(R.id.tvWarningDetail)
         tvStatus = findViewById(R.id.tvStatus)
@@ -118,6 +127,7 @@ class MainActivity : AppCompatActivity() {
             val url = etUrl.text.toString().trim()
             if (url.isNotEmpty()) {
                 lifecycleScope.launch {
+                    repository.incrementStat("total_queries")
                     val result = repository.checkUrl(url)
                     if (result != null) {
                         // Show Red Warning Bar at top
