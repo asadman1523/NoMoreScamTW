@@ -34,6 +34,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+
+        // Firebase Logging (Manual Query)
+        if (typeof FIREBASE_CONFIG !== 'undefined') {
+            if (FIREBASE_CONFIG && FIREBASE_CONFIG.databaseURL && !FIREBASE_CONFIG.databaseURL.includes('YOUR_PROJECT_ID')) {
+                const statUrl = `${FIREBASE_CONFIG.databaseURL}/stats/total_queries.json`;
+                // Simple GET-then-PUT
+                fetch(statUrl).then(res => res.json()).then(count => {
+                    fetch(statUrl, { method: 'PUT', body: JSON.stringify((count || 0) + 1) });
+                }).catch(e => console.error('Log query failed', e));
+            }
+        }
+
         resultDiv.innerHTML = '<span style="color: #666;">查詢中...</span>';
 
         chrome.storage.local.get(['fraudDatabase'], (items) => {
