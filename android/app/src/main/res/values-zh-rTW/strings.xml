@@ -8,7 +8,7 @@
     <string name="url_example">例如 http://www.google.com</string>
     <string name="btn_check">檢查網址</string>
     <string name="result_placeholder">檢查網址以查看結果</string>
-    <string name="msg_safe">✅ 目前安全 (不在資料庫中)</string>
+    <string name="msg_safe">不在資料庫中</string>
     <string name="msg_scam_detected">偵測到詐騙網址</string>
     <string name="toast_updating">更新中...</string>
     <string name="toast_update_finished">更新完成</string>

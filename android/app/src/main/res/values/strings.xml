@@ -8,7 +8,7 @@
     <string name="url_example">ex. www.google.com</string>
     <string name="btn_check">Check URL</string>
     <string name="result_placeholder">Check a URL to see results</string>
-    <string name="msg_safe">✅ Safe (Not in database)</string>
+    <string name="msg_safe">Not in database</string>
     <string name="msg_scam_detected">Scam detected</string>
     <string name="toast_updating">Updating...</string>
     <string name="toast_update_finished">Update Finished</string>
