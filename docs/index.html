@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoMoreScamTW 即時防詐數據</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #1a73e8;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            color: #5f6368;
+            margin-top: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #202124;
+            margin: 10px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-label {
+            color: #5f6368;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #9aa0a6;
+            font-size: 0.9rem;
+        }
+
+        /* Custom Colors */
+        .color-danger {
+            color: #d93025;
+        }
+
+        .color-primary {
+            color: #1a73e8;
+        }
+
+        .color-success {
+            color: #1e8e3e;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>麥騙 - NoMoreScamTW</h1>
+            <p>即時防詐數據儀表板</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">已保護安裝數</div>
+                <div class="stat-value color-primary" id="total_installs">-</div>
+                <div style="font-size: 0.8rem; color: #ccc;">Device Installs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">成功攔截詐騙</div>
+                <div class="stat-value color-danger" id="total_warnings">-</div>
+                <div style="font-size: 0.8rem; color: #ccc;">Scam Alerts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">手動查詢次數</div>
+                <div class="stat-value color-success" id="total_queries">-</div>
+                <div style="font-size: 0.8rem; color: #ccc;">Manual Queries</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>數據來源：NoMoreScamTW 開源防詐應用程式</p>
+            <p>Latest Update: <span id="last_update">Connecting...</span></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs (using CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // TODO: Replace with your project's config object
+        const firebaseConfig = {
+            apiKey: "AIzaSyBk8N92NmNhIwMn-qFgkRRqmyfdCBM-0jw",
+            authDomain: "nomorescamtw.firebaseapp.com",
+            projectId: "nomorescamtw",
+            storageBucket: "nomorescamtw.firebasestorage.app",
+            messagingSenderId: "713839811132",
+            appId: "1:713839811132:web:51ed5ec25f61a550dc4139",
+            measurementId: "G-JZKP3V27XX",
+            databaseURL: "https://nomorescamtw.firebaseio.com"
+        };
+
+        if (firebaseConfig.databaseURL.includes("nomorescamtw")) {
+            alert("請修改 index.html 中的 firebaseConfig 以連接到您的資料庫！");
+        } else {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+
+            // Listen to 'stats' node
+            const statsRef = ref(db, 'stats');
+            onValue(statsRef, (snapshot) => {
+                const data = snapshot.val() || {};
+
+                animateValue("total_installs", data.total_installs || 0);
+                animateValue("total_warnings", data.total_warnings || 0);
+                animateValue("total_queries", data.total_queries || 0);
+
+                document.getElementById("last_update").textContent = new Date().toLocaleTimeString();
+            }, (error) => {
+                console.error("Firebase Read Error", error);
+                document.getElementById("last_update").textContent = "Connection Error";
+            });
+        }
+
+        // Simple animation for numbers
+        function animateValue(id, end) {
+            const obj = document.getElementById(id);
+            if (obj.textContent === '-') obj.textContent = 0;
+
+            const start = parseInt(obj.textContent.replace(/,/g, '')) || 0;
+            if (start === end) return;
+
+            const duration = 1000;
+            const range = end - start;
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                // Easing
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+                const current = Math.floor(start + range * easeProgress);
+                obj.textContent = current.toLocaleString();
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    obj.textContent = end.toLocaleString();
+                }
+            }
+            window.requestAnimationFrame(step);
+        }
+    </script>
+
+</body>
+
+</html>
