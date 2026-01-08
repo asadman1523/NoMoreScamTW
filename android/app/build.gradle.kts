@@ -12,8 +12,8 @@ android {
             applicationId = "com.jackwu.nomorescamtw"
         minSdk = 26
         targetSdk = 36
-        versionCode = 6
-        versionName = "2.4.2"
+        versionCode = 7
+        versionName = "2.4.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
