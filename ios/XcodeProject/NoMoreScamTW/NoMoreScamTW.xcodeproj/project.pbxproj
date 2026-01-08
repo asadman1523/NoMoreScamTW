@@ -30,6 +30,10 @@
 		044E33112F0A13D8005A1341 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 044E33052F0A13D8005A1341 /* manifest.json */; };
 		044E33122F0A13D8005A1341 /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = 044E33062F0A13D8005A1341 /* _locales */; };
 		044E33132F0A13D8005A1341 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 044E33072F0A13D8005A1341 /* content.js */; };
+		04CEB54E2F0F4E6F00AE1504 /* Instruction_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 04CEB54D2F0F4E6F00AE1504 /* Instruction_iPhone.png */; };
+		04CEB54F2F0F4E6F00AE1504 /* Instruction_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 04CEB54C2F0F4E6F00AE1504 /* Instruction_iPad.png */; };
+		04CEB5522F0F505000AE1504 /* Permission_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04CEB5512F0F505000AE1504 /* Permission_2.png */; };
+		04CEB5532F0F505000AE1504 /* Permission_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04CEB5502F0F505000AE1504 /* Permission_1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +87,10 @@
 		044E33052F0A13D8005A1341 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = Resources/manifest.json; sourceTree = "<group>"; };
 		044E33062F0A13D8005A1341 /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = Resources/_locales; sourceTree = "<group>"; };
 		044E33072F0A13D8005A1341 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = Resources/content.js; sourceTree = "<group>"; };
+		04CEB54C2F0F4E6F00AE1504 /* Instruction_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Instruction_iPad.png; sourceTree = "<group>"; };
+		04CEB54D2F0F4E6F00AE1504 /* Instruction_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Instruction_iPhone.png; sourceTree = "<group>"; };
+		04CEB5502F0F505000AE1504 /* Permission_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Permission_1.png; sourceTree = "<group>"; };
+		04CEB5512F0F505000AE1504 /* Permission_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Permission_2.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +138,10 @@
 				044E32DD2F0A13D7005A1341 /* LaunchScreen.storyboard */,
 				044E32E02F0A13D7005A1341 /* Main.storyboard */,
 				044E32E32F0A13D8005A1341 /* Assets.xcassets */,
+				04CEB5502F0F505000AE1504 /* Permission_1.png */,
+				04CEB5512F0F505000AE1504 /* Permission_2.png */,
+				04CEB54C2F0F4E6F00AE1504 /* Instruction_iPad.png */,
+				04CEB54D2F0F4E6F00AE1504 /* Instruction_iPhone.png */,
 				044E32E42F0A13D8005A1341 /* Info.plist */,
 				044E32D12F0A13D7005A1341 /* Resources */,
 			);
@@ -264,8 +276,12 @@
 			files = (
 				044E32D62F0A13D7005A1341 /* Icon.png in Resources */,
 				044E32E22F0A13D7005A1341 /* Main.storyboard in Resources */,
+				04CEB54E2F0F4E6F00AE1504 /* Instruction_iPhone.png in Resources */,
+				04CEB54F2F0F4E6F00AE1504 /* Instruction_iPad.png in Resources */,
 				044E32DF2F0A13D7005A1341 /* LaunchScreen.storyboard in Resources */,
 				044E32D42F0A13D7005A1341 /* Main.html in Resources */,
+				04CEB5522F0F505000AE1504 /* Permission_2.png in Resources */,
+				04CEB5532F0F505000AE1504 /* Permission_1.png in Resources */,
 				044E32F12F0A13D8005A1341 /* Assets.xcassets in Resources */,
 				044E32D82F0A13D7005A1341 /* Style.css in Resources */,
 			);

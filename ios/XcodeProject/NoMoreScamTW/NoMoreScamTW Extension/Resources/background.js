@@ -250,42 +250,78 @@ async function updateDatabase() {
 async function checkUrl(url) {
     try {
         const urlObj = new URL(url);
-        const hostname = urlObj.hostname;
+        const hostname = urlObj.hostname.toLowerCase();
+        // Clean URL: remove protocol and trailing slash, keep path
+        // e.g. https://example.com/foo -> example.com/foo
+        const cleanUrl = url.replace(/^https?:\/\//, '').replace(/\/$/, '').toLowerCase();
 
         // Use cache if available
         if (cachedDatabase && Object.keys(cachedDatabase).length > 0) {
-            const checkCache = (domain) => cachedDatabase[domain] || null;
-            let res = checkCache(hostname);
-            if (!res && hostname.startsWith('www.')) res = checkCache(hostname.slice(4));
-            if (!res && !hostname.startsWith('www.')) res = checkCache('www.' + hostname);
+            const checkCache = (key) => cachedDatabase[key] || null;
+
+            // 1. Check Full URL (Clean)
+            let res = checkCache(cleanUrl);
+            if (res) return res;
+
+            // 2. Check Hostname
+            if (cleanUrl !== hostname) {
+                res = checkCache(hostname);
+                if (res) return res;
+            }
+
+            // 3. WWW variations for Hostname
+            if (hostname.startsWith('www.')) {
+                res = checkCache(hostname.slice(4));
+            } else {
+                res = checkCache('www.' + hostname);
+            }
             if (res) return res;
         }
 
         // Fallback or Initial check from IndexedDB
-        const checkDB = async (domain) => {
+        const checkDB = async (key) => {
             try {
-                return await getFromIndexedDB(domain);
+                return await getFromIndexedDB(key);
             } catch (e) { return null; }
         };
 
-        // 1. Check exact match
-        let result = await checkDB(hostname);
+        // 1. Check Full URL
+        let result = await checkDB(cleanUrl);
         if (result) return result;
 
-        // 2. Check w/o 'www.' if present
+        // 2. Check Hostname
+        if (cleanUrl !== hostname) {
+            result = await checkDB(hostname);
+            if (result) return result;
+        }
+
+        // 3. Check w/o 'www.' if present
         if (hostname.startsWith('www.')) {
             result = await checkDB(hostname.slice(4));
             if (result) return result;
         }
 
-        // 3. Check w/ 'www.' if missing
+        // 4. Check w/ 'www.' if missing
         if (!hostname.startsWith('www.')) {
             result = await checkDB('www.' + hostname);
             if (result) return result;
         }
 
+        // 5. Check Parent Domain (Simple level)
+        // e.g. sub.example.com -> example.com (if distinct from hostname check)
+        const parts = hostname.split('.');
+        if (parts.length > 2) {
+            const parentDomain = parts.slice(1).join('.');
+            // Avoid re-checking if we just stripped www
+            if (parentDomain !== hostname && parentDomain !== hostname.slice(4)) {
+                result = await checkDB(parentDomain);
+                if (result) return result;
+            }
+        }
+
         return null;
     } catch (e) {
+        console.error('Check URL Failed', e);
         return null;
     }
 }

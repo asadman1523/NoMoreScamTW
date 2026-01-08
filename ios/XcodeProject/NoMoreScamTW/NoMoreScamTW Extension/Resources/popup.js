@@ -23,6 +23,155 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // Manual Query Handler
+    document.getElementById('manualQueryBtn').addEventListener('click', () => {
+        const input = document.getElementById('manualQueryInput');
+        const resultDiv = document.getElementById('manualQueryResult');
+        const url = input.value.trim();
+
+        if (!url) {
+            resultDiv.innerHTML = '<span style="color: #d32f2f;">請輸入網址</span>';
+            return;
+        }
+
+        resultDiv.innerHTML = '<span style="color: #666;">查詢中...</span>';
+
+        chrome.storage.local.get(['fraudDatabase'], (items) => {
+            const db = items.fraudDatabase || {};
+            // Basic URL cleaning to get hostname AND full path
+            const cleanFullUrl = url.replace(/^https?:\/\//, '').replace(/\/$/, '').toLowerCase();
+            let hostname = cleanFullUrl.split('/')[0].split(':')[0];
+
+            // Helper function to check variations
+            const checkDB = (key) => {
+                if (db[key]) return db[key];
+                if (key.startsWith('www.') && db[key.slice(4)]) return db[key.slice(4)];
+                if (!key.startsWith('www.') && db['www.' + key]) return db['www.' + key];
+                return null;
+            };
+
+            // 1. Direct check (Full URL)
+            let info = checkDB(cleanFullUrl);
+
+            // 2. Hostname check (if different)
+            if (!info && cleanFullUrl !== hostname) {
+                info = checkDB(hostname);
+            }
+
+            // 3. Parent domain check (if not found)
+            if (!info) {
+                const parts = hostname.split('.');
+                // ... same as before
+                if (parts.length > 2) {
+                    const parentDomain = parts.slice(1).join('.');
+                    info = checkDB(parentDomain);
+                }
+            }
+
+            // 3. Fallback Fetch 165 API (Online Check)
+            if (!info) {
+                // Fetch both 160055 and 165027
+                Promise.all([
+                    // 160055 CSV
+                    fetch('https://data.gov.tw/api/v2/rest/dataset/160055')
+                        .then(res => res.json())
+                        .then(json => fetch(json.result.distribution[0].resourceDownloadUrl))
+                        .then(res => res.text()),
+
+                    // 165027 JSON
+                    fetch('https://data.gov.tw/api/v2/rest/dataset/165027')
+                        .then(res => res.json())
+                        .then(json => {
+                            // Find JSON resource
+                            const dist = json.result.distribution.find(d => d.resourceFormat === 'JSON') || json.result.distribution[0];
+                            return fetch(dist.resourceDownloadUrl);
+                        })
+                        .then(res => res.json())
+                ])
+                    .then(([csvText, jsonList]) => {
+                        let found = false;
+                        let source = '';
+                        const lowerText = csvText.toLowerCase();
+
+                        // --- Check CSV (160055) ---
+                        // Check Full URL
+                        if (lowerText.includes(',' + cleanFullUrl) || lowerText.includes('//' + cleanFullUrl)) {
+                            found = true;
+                            source = '165反詐騙';
+                        } else {
+                            // Check Hostname if different
+                            if (!found && cleanFullUrl !== hostname) {
+                                if (lowerText.includes(',' + hostname) || lowerText.includes('//' + hostname)) {
+                                    found = true;
+                                    source = '165反詐騙';
+                                }
+                            }
+
+                            // Check Parent Domain
+                            if (!found) {
+                                const parts = hostname.split('.');
+                                if (parts.length > 2) {
+                                    const parentDomain = parts.slice(1).join('.');
+                                    if (lowerText.includes(',' + parentDomain) || lowerText.includes('//' + parentDomain)) {
+                                        found = true;
+                                        source = '165反詐騙';
+                                    }
+                                }
+                            }
+                        }
+
+                        // --- Check JSON (165027) ---
+                        if (!found) {
+                            const entry = jsonList.find(item => {
+                                const domain = (item['網域名稱'] || '').toLowerCase();
+                                const url2 = (item['偽冒網址'] || '').toLowerCase();
+
+                                // Check Full URL Match
+                                if (domain === cleanFullUrl || url2.includes(cleanFullUrl)) return true;
+
+                                // Check Hostname Match
+                                if (domain === hostname || url2.includes(hostname)) return true;
+
+                                // Check Parent Domain
+                                const parts = hostname.split('.');
+                                if (parts.length > 2) {
+                                    const parentDomain = parts.slice(1).join('.');
+                                    if (domain === parentDomain || url2.includes(parentDomain)) return true;
+                                }
+                                return false;
+                            });
+
+                            if (entry) {
+                                found = true;
+                                source = 'TWNIC';
+                            }
+                        }
+
+                        if (found) {
+                            resultDiv.innerHTML = `
+                            <div style="color: #c62828; font-weight: bold;">⚠️ 警告！疑似詐騙網站</div>
+                            <div style="font-size:11px; color:#555;">(來源: ${source})</div>
+                        `;
+                        } else {
+                            resultDiv.innerHTML = `
+                            <div style="color: #2e7d32; font-weight: bold;">資料庫無紀錄</div>
+                        `;
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        resultDiv.innerHTML = '<span style="color: #d32f2f;">連線失敗</span>';
+                    });
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="color: #c62828; font-weight: bold;">
+                        ⚠️ 警告！資料庫中有紀錄
+                    </div>
+                `;
+            }
+        });
+    });
+
     // Set text dynamically to prevent flash
     document.getElementById('appName').textContent = chrome.i18n.getMessage('appName');
 

@@ -220,20 +220,30 @@ class FraudRepository(
 
     suspend fun checkUrl(urlToCheck: String): FraudSite? = withContext(Dispatchers.IO) {
         try {
+
+            // Clean URL: remove protocol and trailing slash
+            val cleanFullUrl = urlToCheck.replace(Regex("^https?://"), "").replace(Regex("/$"), "")
+
             val urlObj = URL(if (urlToCheck.startsWith("http")) urlToCheck else "http://$urlToCheck")
             val hostname = urlObj.host
 
-            // 1. Check exact match
-            var result = fraudDao.getSite(hostname)
+            // 1. Check Full Clean URL (includes path)
+            var result = fraudDao.getSite(cleanFullUrl)
             if (result != null) return@withContext result
 
-            // 2. Check w/o 'www.' if present
+            // 2. Check exact match (hostname)
+            if (cleanFullUrl != hostname) {
+                result = fraudDao.getSite(hostname)
+                if (result != null) return@withContext result
+            }
+
+            // 3. Check w/o 'www.' if present
             if (hostname.startsWith("www.")) {
                 result = fraudDao.getSite(hostname.substring(4))
                 if (result != null) return@withContext result
             }
 
-            // 3. Check w/ 'www.' if missing
+            // 4. Check w/ 'www.' if missing
             if (!hostname.startsWith("www.")) {
                 result = fraudDao.getSite("www.$hostname")
                 if (result != null) return@withContext result

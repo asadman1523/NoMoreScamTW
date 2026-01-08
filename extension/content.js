@@ -30,19 +30,12 @@ function showWarning(fraudInfo) {
       <div id="fraud-guard-timer" style="margin-bottom: 10px; color: #d93025; font-weight: bold;">
         將於 <span id="fg-countdown">60</span> 秒後自動導向安全頁面...
       </div>
-      <button id="fraud-guard-button" style="display: none;">立即離開 (回到 Google)</button>
+      <button id="fraud-guard-button">立即離開 (回到 Google)</button>
       <button id="fraud-guard-ignore">我了解風險，繼續瀏覽</button>
     </div>
   `;
 
   document.body.appendChild(overlay);
-
-  // Check display setting for Leave button
-  chrome.storage.local.get(['showLeaveBtn'], (result) => {
-    if (result.showLeaveBtn) {
-      document.getElementById('fraud-guard-button').style.display = 'block';
-    }
-  });
 
   // Safely inject text content
   if (fraudInfo) {

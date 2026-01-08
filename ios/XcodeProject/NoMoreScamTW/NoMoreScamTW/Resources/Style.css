@@ -18,16 +18,42 @@ html {
 body {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; Remove to allow scrolling from top */
     flex-direction: column;
 
     gap: var(--spacing);
-    margin: 0 40px;
-    height: 100%;
+    margin: 0;
+    /* Use padding instead of margin */
+    padding: 40px 20px;
+    /* Add vertical padding */
+    min-height: 100%;
+    /* Allow growth */
+    box-sizing: border-box;
 
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     text-align: center;
     background-color: #ffffff;
+}
+
+/* Image instruction styles */
+.instruction-img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+    margin: 10px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img-ipad {
+    display: none;
+}
+
+.img-iphone {
+    display: block;
 }
 
 .instructions {
@@ -55,4 +81,124 @@ body {
 
 b {
     color: #2196F3;
+}
+
+#footerSection {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#footerSection p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* Center buttons globally */
+#openSettingsBtn,
+#testSafariBtn {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+#footerSection a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* iPad Optimization */
+@media only screen and (min-width: 768px) {
+    .img-iphone {
+        display: none;
+    }
+
+    .img-ipad {
+        display: block;
+    }
+
+    .instruction-img {
+        max-width: 450px !important;
+        width: auto !important;
+    }
+
+    .instructions {
+        padding: 40px;
+        max-width: 80%;
+        margin: 0 auto;
+    }
+
+    .instructions h2 {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .instructions p {
+        font-size: 24px;
+        margin: 20px 0;
+        line-height: 1.6;
+    }
+
+    body {
+        gap: 40px;
+    }
+
+    #openSettingsBtn {
+        font-size: 20px !important;
+        padding: 18px 30px !important;
+        max-width: 400px !important;
+    }
+
+    #testSafariBtn {
+        font-size: 20px !important;
+        padding: 18px 30px !important;
+        max-width: 400px !important;
+        margin-top: 20px !important;
+    }
+
+    /* Scale version number */
+    .instructions h2 span {
+        font-size: 20px !important;
+    }
+
+    /* Scale footer section for iPad */
+    #footerSection {
+        margin-top: 40px;
+        padding: 30px;
+    }
+
+    #footerSection p {
+        font-size: 20px !important;
+        margin-bottom: 20px;
+    }
+
+    #footerSection a {
+        font-size: 24px !important;
+    }
+
+    /* Scale ready section */
+    #readySection h2 {
+        font-size: 32px !important;
+    }
+
+    #readySection p {
+        font-size: 20px !important;
+    }
+
+    #readySection div {
+        font-size: 100px !important;
+    }
+
+    #readySection button {
+        font-size: 20px !important;
+        padding: 15px 30px !important;
+    }
 }

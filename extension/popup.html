@@ -76,13 +76,23 @@
     &nbsp;
   </div>
 
-  <div class="settings"
-    style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 8px; font-size: 16px;">
-    <div id="settingsTitle" style="margin-bottom: 8px; font-weight: bold;">&nbsp;</div>
-    <label style="display: flex; align-items: center; cursor: pointer;">
-      <input type="checkbox" id="showLeaveBtn" style="margin-right: 12px; width: 20px; height: 20px;">
-      <span id="settingLabel">&nbsp;</span>
-    </label>
+
+
+  <!-- Manual Query Section -->
+  <div class="query-section"
+    style="margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 8px; border: 1px solid #bbdefb;">
+    <div style="font-weight: 600; color: #1565c0; margin-bottom: 8px; font-size: 14px;">🔍 手動查詢
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <input type="text" id="manualQueryInput" placeholder="Enter URL..." style="
+            flex: 1; padding: 8px; border: 1px solid #90caf9; border-radius: 4px; font-size: 14px; outline: none;
+        ">
+      <button id="manualQueryBtn" style="
+            width: auto; padding: 8px 12px; background: #1976d2; font-size: 13px;
+        ">查詢</button>
+    </div>
+    <div id="manualQueryResult"
+      style="margin-top: 8px; font-size: 13px; line-height: 1.4; color: #333; min-height: 18px;"></div>
   </div>
 
   <button id="updateBtn" disabled>&nbsp;</button>

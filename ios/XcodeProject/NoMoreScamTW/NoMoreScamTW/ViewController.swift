@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import SafariServices
 
 class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHandler {
 
@@ -19,17 +20,35 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         self.webView.configuration.userContentController.add(self, name: "controller")
 
         self.webView.navigationDelegate = self
-        self.webView.scrollView.isScrollEnabled = false
+        self.webView.scrollView.isScrollEnabled = true
+
+
 
         if let url = Bundle.main.url(forResource: "Main", withExtension: "html") {
             self.webView.loadFileURL(url, allowingReadAccessTo: Bundle.main.resourceURL!)
         }
+        
+        // Listen for App Active (Return from Settings)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+
+    @objc func appDidBecomeActive() {
+        // Notify JS that app is back
+        DispatchQueue.main.async {
+            self.webView.evaluateJavaScript("window.appDidResume && window.appDidResume()", completionHandler: nil)
+        }
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "controller", let body = message.body as? String, body == "openSettings" {
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        if message.name == "controller", let body = message.body as? String {
+            if body == "openSettings" {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            } else if body == "openSafari" {
+                if let url = URL(string: "https://google.com") {
+                    UIApplication.shared.open(url)
+                }
             }
         }
     }
